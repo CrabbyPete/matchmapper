@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block js %}
+<script type="text/javascript">
+
+function set_fields(pos){
+	var longitude = pos.coords.longitude;
+	var latitude  = pos.coords.latitude;
+	$('#longitude').val(longitude);
+	$('#latitude').val(latitude);
+	var gm = new GMaps({div: '#map', lat:latitude, lng:longitude } );
+	
+	gm.addMarker({ lat: latitude, lng: longitude, title:"Raiders football", click: function(e){alert('You clicked in this marker');}
+                });
+};
+
+
+$(document).ready(function() {
+	if (navigator.geolocation) {
+	   navigator.geolocation.getCurrentPosition( set_fields );
+	}
+});
+
+
+</script>
+{% endblock %}
+
+
+{% block body_block %}
+	<div id="map" style="float:left">
+		<!-- Map goes here -->
+	</div>
+	
+{% endblock body_block %}

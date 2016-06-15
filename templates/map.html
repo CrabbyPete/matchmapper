@@ -1,0 +1,677 @@
+{% extends 'base.html' %} {% block js %}
+<script type="text/javascript">
+
+function set_fields(pos){
+	var longitude = pos.coords.longitude;
+	var latitude  = pos.coords.latitude;
+	$('#longitude').val(longitude);
+	$('#latitude').val(latitude);
+	var gm = new GMaps({ div: '#map', 
+	                     lat:latitude, 
+	                     lng:longitude,
+	                    } 
+	                   );
+	gm.map.zoomControlOptions.position = 9;
+	gm.addMarker({ lat: latitude, lng: longitude, title:"Raiders football", click: function(e){alert('You clicked in this marker');}
+                });
+};
+
+
+$(document).ready(function() {
+	if (navigator.geolocation) {
+	   navigator.geolocation.getCurrentPosition( set_fields );
+	}
+	
+	$(".fancybox").fancybox();
+});
+
+
+</script>
+{% endblock %} {% block body_block %}
+<body>
+	<!--header section start-->
+
+	<div class="header">
+		<div class="wrapper">
+
+			<p class="logo">
+				<a href="index.html"><img
+					src="{{url_for('static',filename='img/logo.png')}}"
+					alt="Match mapper" title="Match mapper" /></a>
+			</p>
+			<div id="search">
+				<form>
+					<input name="" type="text" />
+					<input name="" type="submit" />
+				</form>
+			</div>
+
+			<div class="top-rt-header">
+				<a class="add-event fancybox" href="#create-event">Add an Event</a>
+				<div id="create-event" style="display: none;">
+					<div class="event-form-area">
+						<h3>Create an Event</h3>
+
+						<div class="event-form" style="display: block;">
+							<form action="{{url_for('event.add')}}" method='post'>
+
+								<div class="form-single-row">
+									<textarea name="Quick description of the game or sport"
+										      value="Quick description of the game or sport"
+										      id="quick_description">Quick description of the game or sport
+									</textarea>
+								</div>
+
+								<div class="event-lt">
+									<div class="form-single-row event-select">
+										<select name="">
+											<option>Sport</option>
+											<option>Select</option>
+										</select>
+									</div>
+								</div>
+								<div class="event-rt">
+									<div class="form-single-row event-select">
+										<select name="">
+											<option>Level</option>
+											<option>Select</option>
+										</select>
+									</div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="form-single-row">
+									<textarea name="Address of the game"
+										value="Address of the game" id="address-game">Address of the game</textarea>
+								</div>
+
+								<div class="event-lt">
+									<div class="form-single-row">
+										<input class="date-pic" name="Date you are looking for"
+											value="Date you are looking for" id="date-looking-for"
+											type="text" />
+									</div>
+								</div>
+
+								<div class="event-rt">
+									<div class="form-single-row">
+										<input class="time-pic" name=" How long is this good for"
+											value=" How long is this good for" id="how-long-good"
+											type="text" />
+									</div>
+								</div>
+								<div class="clear"></div>
+
+								<div class="two-col-devide">
+									<div class="event-lt">
+										<div class="form-single-row">
+											<label class="main-label">Will you host the game</label> 
+											<label class="label_radio" for="sample-radio"> 
+												<input name="sample-radio1" id="sample-radio1" value="1"
+													   type="radio" />
+												<span>Yes</span>
+											</label> 
+											<label class="label_radio" for="sample-radio"> 
+												<input name="sample-radio1" 
+												       id="sample-radio1" 
+												       value="1"
+												       type="radio" />
+												<span>No</span>
+											</label>
+										</div>
+									</div>
+
+									<div class="event-rt">
+
+										<div class="form-single-row">
+											<label class="main-label">Will you travel to a game</label> 
+											<label class="label_radio" for="sample-radio"> 
+												<input name="sample-radio1" 
+												       id="sample-radio2" 
+												       value="1"
+												       type="radio" />
+												<span>Yes</span>
+											</label> 
+											<label class="label_radio" for="sample-radio"> 
+												<input name="sample-radio1" 
+												       id="sample-radio2" 
+												       value="1"
+													   type="radio" />
+												<span>No</span>
+											</label>
+										</div>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+
+								<div class="two-col-devide">
+									<div class="event-lt">
+										<div class="form-single-row">
+											<input name="Fees" value="Fees" id="fees" type="text" />
+										</div>
+									</div>
+
+									<div class="event-rt">
+										<div class="form-single-row">
+											<input name="Restrictions" value="Restrictions"
+												id="restrictions" type="text" />
+										</div>
+
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<div class="form-single-row">
+									<textarea name="Anything they want to add"
+										      value="Anything they want to add" 
+										      id="anything-want">Address of the game
+									</textarea>
+								</div>
+
+								<div class="form-single-row">
+									<label class="left-label">Do you want text messages from opponents?:</label> 
+									<label class="label_radio" for="sample-radio">
+										<input name="sample-radio1" id="sample-radio4" value="1"
+										type="radio" />
+									<span>Yes</span>
+									</label> 
+									<label class="label_radio" for="sample-radio"> 
+										<input name="sample-radio1" id="sample-radio4" value="1" type="radio" />
+										<span>No</span>
+									</label>
+									<div class="clear"></div>
+								</div>
+
+								<div class="form-single-row">
+									<label class="left-label">Do you want opponents to call you? :</label> 
+									<label class="label_radio" for="sample-radio">
+										<input name="sample-radio1" id="sample-radio5" value="1"
+										       type="radio" />
+										<span>Yes</span>
+									</label> 
+									<label class="label_radio" for="sample-radio"> 
+										<input name="sample-radio1" id="sample-radio5" value="1" type="radio" />
+										<span>No</span>
+									</label>
+									<div class="clear"></div>
+								</div>
+
+								<div class="form-single-row">
+									<label class="left-label">Do you want opponents to call you? :</label> 
+									<label class="label_radio" for="sample-radio">
+										<input name="sample-radio1" 
+										       id="sample-radio6" value="1"
+										       type="radio" />
+										<span>Yes</span>
+									</label> 
+									
+									<label class="label_radio" for="sample-radio"> 
+										<input name="sample-radio1" id="sample-radio6" value="1" type="radio" />
+										<span>No</span>
+									</label>
+									<div class="clear"></div>
+								</div>
+
+								<div class="form-single-row">
+									<input type="submit" value="ADD EVENT" />
+								</div>
+							</form>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="sign-up-area">
+					<a class="fancybox" id="sign-in" href="#sign-in-show">Sign In</a>
+					<div id="sign-in-show" style="display: none;">
+						<div class="signin-form">
+							<h3>Welcome to Matchmapper</h3>
+
+							<div class="sign-up-in-tabcont" style="display: block;">
+
+								<form id="sign-in-form">
+									<div class="form-single-row">
+										<label>Enter Email</label>
+										<input name="username" type="email" value="" id="email" />
+									</div>
+									<div class="form-single-row">
+										<label>Enter Password</label>
+										<input name="password" type="password" value="" id="password" />
+									</div>
+									<div class="form-single-row">
+										<input type="submit" value="Login" />
+									</div>
+									<div class="form-single-row">
+										<p class="forget-password">
+											<a href="{{url_for('user.forgot')}}">Forgot Password?</a>
+										</p>
+									</div>
+								</form>
+								<div class="clear"></div>
+							</div>
+						</div>
+					</div>
+
+					<span>or</span> <a class="fancybox" href="#sign-up">Sign up</a>
+					<div id="sign-up" style="display: none;">
+						<div class="signin-form">
+							<h3>Welcome to Matchmapper</h3>
+
+							<div class="sign-up-in-tabcont sign-up-form">
+								<form id="sign-up-form">
+									<div class="form-single-row">
+										<label>First Name</label>
+										<input name="first_name" type="text" value="" id="first_name" />
+									</div>
+									<div class="form-single-row">
+										<label>Last Name</label>
+										<input name="last_name" type="text" value="" id="last_name" />
+									</div>
+									<div class="form-single-row">
+										<label>Enter Email</label>
+										<input name="username" type="email" value="" id="mail" />
+									</div>
+									<div class="form-single-row">
+										<label>Create Password</label><input name="password"
+											type="password" value="" id="password" />
+									</div>
+									<div class="form-single-row">
+										<label>Phone</label><input name="phone" type="text" value=""
+											id="phone" />
+									</div>
+									<div class="form-single-row">
+										<label>Address</label>
+										<textarea name="address" value="" id="address"></textarea>
+									</div>
+									
+									<div class="form-single-row">
+										<div class="form-single-row">
+											<label class="main-label">Check on best contact</label> 
+											<label class="label_radio" for="sample-radio"> 
+												<input name="preference" id="sample-radio1" value="phone" type="radio" checked />
+												<span>Phone</span>
+												</label> <label class="label_radio" for="sample-radio"> 
+												<input name="preference" id="sample-radio1" value="email" type="radio" />
+												<span>Email</span>
+											</label>
+											<div class="clear"></div>
+										</div>
+									</div>
+
+									<div class="form-single-row">
+										<input type="submit" value="Sign Up" />
+									</div>
+
+								</form>
+								<div class="clear"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="header-outer"></div>
+		</div>
+
+	</div>
+	<!--header section end-->
+
+	<!--Body sectin start-->
+
+	<div>
+		<div class="wrapper">
+			<!--Left sectin start-->
+			<div class="ltCol">
+
+				<div class="map-area">
+					<div class="filter-area">
+
+						<p class="label">Filter :</p>
+						<div class="sports-filter-area">
+							<a class="drop-sports" href="#"><span>Sports</span></a>
+							<div class="drop-sports-check" style="display: none;">
+								<ul>
+									<li class="drop-down-txt"><label class="myCheckbox">
+											<input type="checkbox" name="checkbox"> <span>Football</span>
+									</label></li>
+
+									<li class="drop-down-txt"><label class="myCheckbox">
+											<input type="checkbox" name="checkbox"> <span>Baseball</span>
+									</label></li>
+								</ul>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div>
+						<div id="map"></div>
+						<div class="map-pop">
+							<div class="map-pop-lt">
+								<img src="img/pop-map-img.jpg" alt="" title="" />
+							</div>
+							<div class="map-pop-rt">
+								<h4>Jaguars Team</h4>
+								<p>Lorem Ipsum is simply dummy text</p>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="map-pop-icon"></div>
+					</div>
+				</div>
+			</div>
+			<div class="rtCol">
+				<h3>Sponsored Team</h3>
+				<ul class="team-two-block">
+					<li><a href="#single-sub-team1" class="fancybox"><img
+							src="img/team-logo-1.jpg" alt="" title="" /></a>
+
+						<div id="single-sub-team1" style="display: none;">
+							<div class="popup_team">
+								<img class="popup_team-img" src="img/buffelo.jpg" alt="Buffalo"
+									title="Buffalo" />
+								<div>
+									<h3>Jaguars Team</h3>
+									<p class="info">14 Players, 2 Goal Keeper, 2 Doctor and 1
+										Coaches</p>
+
+									<ul class="team-sub-list two-col">
+										<li>Lorem Ipsum is simply</li>
+										<li>Lorem Ipsum is simply</li>
+									</ul>
+
+									<ul class="team-sub-list two-col">
+										<li>Lorem Ipsum is simply</li>
+										<li>Lorem Ipsum is simply</li>
+									</ul>
+									<div class="clear"></div>
+
+									<p>
+										<a href="www.jaguarsteam.com">www.jaguarsteam.com</a>
+									</p>
+									<p class="description">Vestibulum quis sagittis quam.
+										Aenean quis nunc eget metus tincidunt volutpat vitae vitae
+										odio. Aenean eget leo condimentum, scelerisque orci at,
+										iaculis quam. Cras placerat volutpat euismod. Praesent luctus
+										fermentum est nec pretium.</p>
+								</div>
+							</div>
+						</div>
+						<h4>Jaguars Team</h4>
+						<p>Lorem Ipsum is simply dummy text of the printing and
+							typesetting creative industry.</p>
+						<p>
+							<a href="www.jaguarsteam.com">www.jaguarsteam.com</a>
+						</p></li>
+					<li><a href="#single-sub-team2" class="fancybox"><img
+							src="img/team-logo-2.jpg" alt="" title="" /></a>
+						<div id="single-sub-team2" style="display: none;">
+							<div class="popup_team">
+								<img class="popup_team-img" src="img/buffelo.jpg" alt="Buffalo"
+									title="Buffalo" />
+								<div>
+									<h3>Jaguars Team</h3>
+									<p class="info">14 Players, 2 Goal Keeper, 2 Doctor and 1
+										Coaches</p>
+
+									<ul class="team-sub-list two-col">
+										<li>Lorem Ipsum is simply</li>
+										<li>Lorem Ipsum is simply</li>
+									</ul>
+
+									<ul class="team-sub-list two-col">
+										<li>Lorem Ipsum is simply</li>
+										<li>Lorem Ipsum is simply</li>
+									</ul>
+									<div class="clear"></div>
+
+									<p>
+										<a href="www.jaguarsteam.com">www.jaguarsteam.com</a>
+									</p>
+									<p class="description">Vestibulum quis sagittis quam.
+										Aenean quis nunc eget metus tincidunt volutpat vitae vitae
+										odio. Aenean eget leo condimentum, scelerisque orci at,
+										iaculis quam. Cras placerat volutpat euismod. Praesent luctus
+										fermentum est nec pretium.</p>
+								</div>
+							</div>
+						</div>
+						<h4>KNYB ONs ORANJE</h4>
+						<p>Lorem Ipsum is simply dummy text of the printing and
+							typesetting creative industry.</p>
+						<p>
+							<a href="www.kynboranje.com">www.kynboranje.com</a>
+						</p></li>
+				</ul>
+
+				<h2>Match Ups</h2>
+				<p class="result-sec">
+					149 results. <span>5 unmapped.</span>
+				</p>
+				<div class="team-list-scroll">
+					<ul class="team-list">
+						<li>
+							<div class="team-lt">
+								<a href="#single-team1" class="fancybox"><img
+									src="img/team-logo-3.jpg" alt="" title="" /></a>
+							</div>
+
+							<div id="single-team1" style="display: none;">
+								<div class="popup_team">
+									<img class="popup_team-img" src="img/buffelo.jpg" alt="Buffalo"
+										title="Buffalo" />
+									<div>
+										<h3>Jaguars Team</h3>
+										<p class="info">14 Players, 2 Goal Keeper, 2 Doctor and 1
+											Coaches</p>
+
+										<ul class="team-sub-list two-col">
+											<li>Lorem Ipsum is simply</li>
+											<li>Lorem Ipsum is simply</li>
+										</ul>
+
+										<ul class="team-sub-list two-col">
+											<li>Lorem Ipsum is simply</li>
+											<li>Lorem Ipsum is simply</li>
+										</ul>
+										<div class="clear"></div>
+
+										<p>
+											<a href="www.jaguarsteam.com">www.jaguarsteam.com</a>
+										</p>
+										<p class="description">Vestibulum quis sagittis quam.
+											Aenean quis nunc eget metus tincidunt volutpat vitae vitae
+											odio. Aenean eget leo condimentum, scelerisque orci at,
+											iaculis quam. Cras placerat volutpat euismod. Praesent luctus
+											fermentum est nec pretium.</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="team-rt">
+								<h4>Jaguars Team</h4>
+								<p>14 Players, 2 Goal Keeper, 2 Doctor and 1 Coaches</p>
+
+								<ul class="team-sub-list">
+									<li>Lorem Ipsum is simply</li>
+									<li>Lorem Ipsum is simply</li>
+								</ul>
+								<p>
+									<a href="www.jaguarsteam.com">www.jaguarsteam.com</a>
+								</p>
+							</div>
+							<div class="clear"></div>
+						</li>
+
+						<li>
+							<div class="team-lt">
+								<a href="#single-team2" class="fancybox"><img
+									src="img/team-logo-4.jpg" alt="" title="" /></a>
+							</div>
+
+							<div id="single-team2" style="display: none;">
+								<div class="popup_team">
+									<img class="popup_team-img" src="img/buffelo.jpg" alt="Buffalo"
+										title="Buffalo" />
+									<div>
+										<h3>Jaguars Team</h3>
+										<p class="info">14 Players, 2 Goal Keeper, 2 Doctor and 1
+											Coaches</p>
+
+										<ul class="team-sub-list two-col">
+											<li>Lorem Ipsum is simply</li>
+											<li>Lorem Ipsum is simply</li>
+										</ul>
+
+										<ul class="team-sub-list two-col">
+											<li>Lorem Ipsum is simply</li>
+											<li>Lorem Ipsum is simply</li>
+										</ul>
+										<div class="clear"></div>
+
+										<p>
+											<a href="www.jaguarsteam.com">www.jaguarsteam.com</a>
+										</p>
+										<p class="description">Vestibulum quis sagittis quam.
+											Aenean quis nunc eget metus tincidunt volutpat vitae vitae
+											odio. Aenean eget leo condimentum, scelerisque orci at,
+											iaculis quam. Cras placerat volutpat euismod. Praesent luctus
+											fermentum est nec pretium.</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="team-rt">
+								<h4>Jaguars Team</h4>
+								<p>14 Players, 2 Goal Keeper, 2 Doctor and 1 Coaches</p>
+
+								<ul class="team-sub-list">
+									<li>Lorem Ipsum is simply</li>
+									<li>Lorem Ipsum is simply</li>
+								</ul>
+								<p>
+									<a href="www.jaguarsteam.com">www.jaguarsteam.com</a>
+								</p>
+							</div>
+							<div class="clear"></div>
+						</li>
+
+						<li>
+							<div class="team-lt">
+								<a href="#single-team3" class="fancybox"><img
+									src="img/team-logo-5.jpg" alt="" title="" /></a>
+							</div>
+
+							<div id="single-team3" style="display: none;">
+								<div class="popup_team">
+									<img class="popup_team-img" src="img/buffelo.jpg" alt="Buffalo"
+										title="Buffalo" />
+									<div>
+										<h3>Jaguars Team</h3>
+										<p class="info">14 Players, 2 Goal Keeper, 2 Doctor and 1
+											Coaches</p>
+
+										<ul class="team-sub-list two-col">
+											<li>Lorem Ipsum is simply</li>
+											<li>Lorem Ipsum is simply</li>
+										</ul>
+
+										<ul class="team-sub-list two-col">
+											<li>Lorem Ipsum is simply</li>
+											<li>Lorem Ipsum is simply</li>
+										</ul>
+										<div class="clear"></div>
+
+										<p>
+											<a href="www.jaguarsteam.com">www.jaguarsteam.com</a>
+										</p>
+										<p class="description">Vestibulum quis sagittis quam.
+											Aenean quis nunc eget metus tincidunt volutpat vitae vitae
+											odio. Aenean eget leo condimentum, scelerisque orci at,
+											iaculis quam. Cras placerat volutpat euismod. Praesent luctus
+											fermentum est nec pretium.</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="team-rt">
+								<h4>Jaguars Team</h4>
+								<p>14 Players, 2 Goal Keeper, 2 Doctor and 1 Coaches</p>
+
+								<ul class="team-sub-list">
+									<li>Lorem Ipsum is simply</li>
+									<li>Lorem Ipsum is simply</li>
+								</ul>
+								<p>
+									<a href="www.jaguarsteam.com">www.jaguarsteam.com</a>
+								</p>
+							</div>
+							<div class="clear"></div>
+						</li>
+
+						<li>
+							<div class="team-lt">
+								<a href="#single-team4" class="fancybox"><img
+									class="popup_team-img" src="img/team-logo-6.jpg" alt=""
+									title="" /></a>
+							</div>
+							<div id="single-team4" style="display: none;">
+								<div class="popup_team">
+									<img src="img/buffelo.jpg" alt="Buffalo" title="Buffalo" />
+									<div>
+										<h3>Jaguars Team</h3>
+										<p class="info">14 Players, 2 Goal Keeper, 2 Doctor and 1
+											Coaches</p>
+
+										<ul class="team-sub-list two-col">
+											<li>Lorem Ipsum is simply</li>
+											<li>Lorem Ipsum is simply</li>
+										</ul>
+
+										<ul class="team-sub-list two-col">
+											<li>Lorem Ipsum is simply</li>
+											<li>Lorem Ipsum is simply</li>
+										</ul>
+										<div class="clear"></div>
+
+										<p>
+											<a href="www.jaguarsteam.com">www.jaguarsteam.com</a>
+										</p>
+										<p class="description">Vestibulum quis sagittis quam.
+											Aenean quis nunc eget metus tincidunt volutpat vitae vitae
+											odio. Aenean eget leo condimentum, scelerisque orci at,
+											iaculis quam. Cras placerat volutpat euismod. Praesent luctus
+											fermentum est nec pretium.</p>
+									</div>
+								</div>
+							</div>
+							<div class="team-rt">
+								<h4>Jaguars Team</h4>
+								<p>14 Players, 2 Goal Keeper, 2 Doctor and 1 Coaches</p>
+
+								<ul class="team-sub-list">
+									<li>Lorem Ipsum is simply</li>
+									<li>Lorem Ipsum is simply</li>
+								</ul>
+								<p>
+									<a href="www.jaguarsteam.com">www.jaguarsteam.com</a>
+								</p>
+							</div>
+							<div class="clear"></div>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<!--Left sectin end-->
+		</div>
+	</div>
+
+	<!--Body sectin end-->
+	<!--Footer section start-->
+
+
+	<!--Footer section end-->
+</body>
+{% endblock %}

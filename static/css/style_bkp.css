@@ -1,0 +1,753 @@
+@charset "utf-8";
+/* CSS Document */
+*{
+	margin:0;
+	padding:0;
+}
+
+/*@font-face {
+	font-family: 'Conv_MyriadPro-Regular';
+	src: url('../fonts/MyriadPro-Regular.eot');
+	src: local('☺'), url('../fonts/MyriadPro-Regular.woff') format('woff'), url('../fonts/MyriadPro-Regular.ttf') format('truetype'), url('../fonts/MyriadPro-Regular.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Conv_MyriadPro-Semibold';
+	src: url('../fonts/MyriadPro-Semibold.eot');
+	src: local('☺'), url('../fonts/MyriadPro-Semibold.woff') format('woff'), url('../fonts/MyriadPro-Semibold.ttf') format('truetype'), url('../fonts/MyriadPro-Semibold.svg') format('svg');
+	}*/
+
+body{
+	font-family: 'Montserrat', sans-serif;
+	font-size:14px;
+	color:#888888;
+}
+img{
+	display:block;
+	border:none;
+	outline:none;
+}
+
+ul{
+	list-style:none;
+}
+input:focus, textarea:focus{
+	outline:none;
+}
+input[type=submit]{
+	-webkit-appearance:none;
+}
+textarea{
+	overflow:auto;
+}
+a, a:hover{
+	text-decoration:none;
+	outline:none;
+}
+h1,h2,h3,h4{
+	font-family: 'Montserrat', sans-serif;
+}
+.clear{
+	clear:both;
+	font-size:0;
+	line-height:0;
+}
+.wrapper{
+	width:1822px;
+	margin:0 auto;
+}
+
+/*header section start*/
+
+
+.header{
+	/*position: relative;	*/
+}
+
+.header .wrapper{
+	position: relative;	
+
+}
+
+.header-outer{
+	background: rgba(0, 0, 0, 0) url("../images/header-shadow.png") repeat-x scroll left bottom;
+    height: 2px;
+    position: absolute;
+    width: 100%;
+    z-index: 4;
+	bottom: -2px;
+}
+
+.logo{
+	background:#0074e4;
+	width:249px;
+	padding:18px 0;
+	float:left;
+}
+
+.logo img{
+margin:0 auto;
+}
+
+#search{
+	margin:30px;
+	float:left;
+	border:1px solid #bbbbbb;
+	overflow: hidden;
+}
+
+#search input[type="text"]{
+	width:362px;
+	height:27px;
+	background:#fff;
+	border:0;
+	font-family: 'Montserrat', sans-serif;
+	font-size:14px;
+	color:#888888;
+	padding:5px;
+	float:left;
+}
+
+#search input[type="submit"]{
+	background:#696969 url(../images/search-ico.png) center center no-repeat;
+	width:372px;
+	height:37px;
+	border:0;
+	width:36px;
+	height:37px;
+	text-indent:-9999px;
+	cursor:pointer;
+	transition-duration:0.3s;
+	float: right;
+}
+
+#search input[type="submit"]:hover{
+	background:#fff url(../images/search-ico-hov.png) center center no-repeat;
+	transition-duration:0.3s;
+}
+
+.top-rt-header{
+float:right;
+padding:25px 0;
+margin:0 21px 0 0;
+}
+
+.add-event{
+	background:#df0a0a;
+	color:#fff;
+	font-size:13px;
+	line-height:20px;
+	text-align:center;
+	font-weight:700;
+	text-transform:uppercase;
+	width:133px;
+	padding:14px 0;
+	float:right;
+	border:1px solid #df0a0a;
+	transition-duration:0.3s;
+}
+
+.add-event:hover{
+	background:#fff;
+	color:#df0a0a;
+	border:1px solid #df0a0a;
+	transition-duration:0.3s;
+}
+
+.sign-up-area{
+float:left;
+margin:15px 20px 0 0;
+}
+
+.sign-up-area span{
+color:#2c2c2c;
+	font-size:14px;
+	line-height:18px;
+	font-weight:300;
+}
+
+
+
+
+.sign-up-area a{
+	color:#76b6f4;
+	font-size:14px;
+	line-height:18px;
+	text-transform:uppercase;
+	font-weight:300;
+	margin:0 7px;
+}
+
+
+.sign-up-area a.active{
+	color:#0074e4;
+}
+
+.sign-up-area a:hover{
+	color:#696969;
+	}
+
+/*header section end
+-------------------------------------------*/
+
+/*body section start
+-------------------------------------------*/
+
+.ltCol{
+	float:left;
+}
+
+.map-area{
+	position:relative;
+}
+
+.filter-area{
+	position:absolute;
+	left:0;
+	top:0;
+}
+
+.filter-area .label{
+background:#696969;
+width:82px;
+height:40px;
+color:#fff;
+font-weight:400;
+display:inline-block;
+float:left;
+text-align:center;
+line-height:40px;
+font-size: 15px;
+}
+
+.sports-filter-area{
+	float:left;
+	position:relative;
+}	
+
+
+.drop-sports{
+    background: #fff url("../images/dropdown-arrow.png") no-repeat scroll 96% 50%;
+    border: 1px solid #696969;
+    color: #888888;
+    display: block;
+    font-family: "Montserrat",sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 0 0 19px;
+    vertical-align: middle;
+    width: 146px;
+}
+
+
+.drop-sports-check {
+	background: #fff none repeat scroll 0 0;
+    border: 1px solid #696969;
+	border-top:0;
+    overflow: hidden;
+    padding: 10px 20px;
+	
+    position: absolute;
+    width: 125px;
+}
+
+
+.rtCol{
+	padding:25px 23px 0 23px;
+	width:432px;
+	float:right;
+}
+
+.rtCol h3{
+	color:#3b3b3b;
+	font-size:22px;
+	line-height:24px;
+	font-weight:300;
+	margin: 0 0 13px;
+}
+
+.team-two-block{
+	overflow:hidden;
+}
+
+.team-two-block li{
+	width:199px;
+	margin:0 30px 0 0;
+	float:left;
+}
+
+.team-two-block li:last-child{
+	margin:0;
+}
+
+.team-two-block li h4{
+	color:#313131;
+	font-size:18px;
+	line-height:24px;
+	font-weight:300;
+	 margin: 12px 0 2px;
+}
+
+.team-two-block li p{
+	color: #888888;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 16px;
+    margin: 0 0 7px;
+}
+
+.team-two-block li p a{
+	color:#0074e4;
+	font-size:12px;
+	line-height:16px;
+	font-weight:500;
+}
+
+.team-two-block li p a:hover{
+	color:#313131;
+}
+
+
+.rtCol h2{
+	color:#3b3b3b;
+	font-size:34px;
+	line-height:40px;
+	font-weight: 500;
+	 margin: 40px 0 4px;
+}
+
+
+
+
+.result-sec{
+	color:#3b3b3b;
+	font-size:16px;
+	line-height:20px;
+	font-weight:600;
+	font-family: 'Montserrat', sans-serif;
+}
+
+.result-sec span{
+	color:#0074e4;
+}
+
+.team-list{
+	margin:40px 0 0 0;
+}
+
+.team-list li{
+	margin:0 0 30px 0;
+}
+
+
+.team-list li:last-child{
+	margin:0;
+}
+
+.team-list .team-lt{
+	float:left;
+	width:199px;
+	margin:0 15px 0 0;
+}
+
+.team-list .team-rt{
+	float:left;
+	width:200px;
+}
+
+.team-list .team-rt h4{
+	 color: #313131;
+    font-size: 18px;
+    line-height: 24px;
+	margin: 0 0 10px;
+	font-weight: 300;
+}
+
+.team-list .team-rt p {
+    color: #888888;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 18px;
+    margin: 0 0 6px;
+}
+
+.team-list .team-rt p a {
+    color: #0074e4;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+}
+
+.team-list .team-rt p a:hover {
+    color: #313131;
+}
+
+.team-sub-list{
+	 margin:0 0 5px 0;
+}
+
+.team-sub-list li{
+	background: rgba(0, 0, 0, 0) url("../images/list-bullet.jpg") no-repeat scroll left 3px;
+    color: #505050;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    margin: 0 0 4px;
+    padding: 0 0 0 14px;
+}
+
+label.myCheckbox {
+    display: block;
+    margin-top: 6px;
+    width: auto;
+	overflow:hidden;
+}
+
+label.myCheckbox input {
+    display: none;
+}
+
+
+label.myCheckbox span {
+    background: rgba(0, 0, 0, 0) url("../images/check-box.png") no-repeat scroll left 3px;
+    color: #888888;
+    display: block;
+    float: left;
+    font-size: 14px;
+    font-weight: 500;
+    height: 23px;
+    line-height: 23px;
+    margin-bottom: 7px;
+    padding-left: 29px;
+	
+}
+
+label.myCheckbox span strong{
+	color:#0074e4;
+}
+
+
+
+label.myCheckbox input:checked + span {
+    background: rgba(0, 0, 0, 0) url("../images/check-box-tick.png") no-repeat scroll left 3px;
+}
+
+
+.fancybox-lock .fancybox-overlay {
+    background: rgba(0, 0, 0, 0.8) none repeat scroll 0 0;
+}
+
+.fancybox-close {
+    background-image: url("../images/cross_ico.png") !important;
+    height: 15px !important;
+    transition-duration: 0.3s;
+    width: 15px !important;
+	 right: 7px !important;
+    top: 7px !important;
+}
+
+.fancybox-close:hover{
+    background-image: url("../images/cross_ico-hov.png") !important;
+	transition-duration: 0.3s;
+}
+
+.fancybox-wrap {
+    width: 501px !important;
+}
+
+.pop_content {
+    background: #fff none repeat scroll 0 0;
+    
+}
+
+.fancybox-skin{
+-webkit-border-radius: 0 0 0 0  !important;
+border-radius: 0 0 0 0  !important;
+padding: 30px !important; 
+}
+
+.fancybox-inner {
+    width: 100% !important;
+}
+
+.popup_team{
+	width:100%;
+}
+
+.two-col{
+	width:178px;
+	float:left;
+	
+}
+
+.two-col li{
+	margin: 0 0 8px;
+}
+
+.popup_team h3 {
+    color: #313131;
+    font-size: 28px;
+    line-height: 34px;
+    margin:20px 0 10px;
+	font-weight: 300;
+}
+
+.popup_team p.info {
+    color: #888888;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 18px;
+	margin: 0 0 12px;
+}
+
+.popup_team p {
+    color: #505050;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+}
+
+.popup_team p.description{
+	margin:23px 0 0 0;
+}
+
+.popup_team p a {
+    color: #0074e4;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+}
+
+.popup_team p a:hover {
+    color: #313131;
+}
+
+
+.signin-form h3{
+	color:#000;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 35px;
+	
+}
+
+.form-single-row{
+	margin-bottom:20px;
+}
+
+.sign-up-in{
+	border-bottom: 1px solid #ccc;
+    height: 47px;
+    margin: 16px 0 30px;
+} 
+
+.sign-up-in li{
+	display: inline-block;
+    min-width: 103px;
+    position: relative;
+}
+
+.sign-up-in li a{
+	color: #000;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.sign-up-in li.active a{
+	color:#0074e4;
+	
+}
+
+.sign-up-in li.active a span{
+	border-bottom:3px solid #0074e4;
+	
+}
+
+.sign-up-in li span{
+	display: block;
+    height: 34px;
+    min-width:67px;
+    position: absolute;
+}
+
+.sign-up-in-tabcont input[type="text"], .sign-up-in-tabcont input[type="email"], .sign-up-in-tabcont input[type="password"]{
+	width:418px;
+	height:20px;
+	border:1px solid #cccccc;
+	color:#888888;
+	font-size:16px;
+	font-weight: 500;
+    line-height: 20px;
+	padding:10px;
+	-webkit-box-shadow:0 2px 3px 0 #e6e5e5 inset;
+box-shadow:0 2px 3px 0 #e6e5e5 inset;
+font-family: 'Montserrat', sans-serif;
+}
+
+
+.sign-up-in-tabcont textarea{
+	width:418px;
+	height:101px;
+	border:1px solid #cccccc;
+	color:#888888;
+	font-size:16px;
+	font-weight: 500;
+    line-height: 20px;
+	padding:10px;
+	-webkit-box-shadow:0 2px 3px 0 #e6e5e5 inset;
+box-shadow:0 2px 3px 0 #e6e5e5 inset;
+font-family: 'Montserrat', sans-serif;
+}
+
+
+.sign-up-in-tabcont input[type="submit"]{
+	 background: #0074e4 none repeat scroll 0 0;
+    border: 1px solid #0074e4;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    font-size: 18px;
+    font-weight: 500;
+    height: 44px;
+    line-height: 44px;
+    margin: 0 auto;
+    text-align: center;
+    text-transform: uppercase;
+    width: 158px;
+	transition-duration:0.3s;
+	font-family: 'Montserrat', sans-serif;
+}
+
+.sign-up-in-tabcont input[type="submit"]:hover{
+	 background: #fff none repeat scroll 0 0;
+    border: 1px solid #0074e4;
+    color: #0074e4;
+	transition-duration:0.3s;
+	
+}
+
+p.forget-password a{
+	color: #888888;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: center;
+	font-family: 'Montserrat', sans-serif;
+}
+
+p.forget-password a:hover{
+	text-decoration:underline;
+	}
+
+
+.sign-forn-lt{
+	float:left;
+	width:105px;
+	height:95px;
+	border:1px solid #cccccc;
+	padding:5px;
+	-webkit-box-shadow:0 2px 3px 0 #e6e5e5 inset;
+	box-shadow:0 2px 3px 0 #e6e5e5 inset;
+}
+
+.sign-forn-rt{
+	width:306px;
+	float:right;
+}
+
+
+
+.sign-up-in-tabcont .sign-forn-rt input[type="text"]{
+
+    width: 283px;
+	}
+
+.player-select {
+    background: #fff url("../images/dropdown-arrow.png") no-repeat scroll 96% 50%;
+    display: inline-block;
+    float: left;
+    font-weight: 600;
+    height: 30px;
+    margin: 0;
+    overflow: hidden;
+    vertical-align: middle;
+	border:1px solid #cccccc;
+	padding:5px;
+	-webkit-box-shadow:0 2px 3px 0 #e6e5e5 inset;
+	box-shadow:0 2px 3px 0 #e6e5e5 inset;
+    width: 292px;
+}
+
+.player-select select {
+    background: transparent none repeat scroll 0 0;
+    border: 0 none;
+    border-radius: 0;
+    color: #888888;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: 30px;
+    margin: 0;
+    padding: 0 0 0 5px;
+    width: 114%;
+}
+
+.team-logo{
+	width:103px;
+	height:69px;
+	margin:0 auto;
+	display:block;
+}
+
+.browse-btn{
+	line-height:20px;
+	color:#fff;
+	background:#0074e4;
+	border:1px solid #fff;
+	text-align:center;
+	display:block;
+	font-family: 'Montserrat', sans-serif;
+	margin-top:5px;
+}
+
+.browse-btn:hover{
+	color:#0074e4;
+	background:#fff;
+	border:1px solid #0074e4;
+	}
+	
+.top-signup-from{
+	margin-bottom:20px;
+}
+
+.no-margin-bottom{
+	margin-bottom:0 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*body section end
+-------------------------------------------*/
+
+
+

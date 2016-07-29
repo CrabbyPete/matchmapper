@@ -1,14 +1,13 @@
 # Python imports
 
-#import googlemaps
-
 # Import Flask
-from flask                  import Flask, render_template, redirect, url_for
+from flask                  import Flask, render_template
 
+# Local Locals
 from config                 import SECRET_KEY
 
 # Blueprint apps
-from user                   import user, init_user, current_user
+from user                   import init_user, current_user
 from event                  import event
 
 app = Flask(__name__)
@@ -17,7 +16,7 @@ app.secret_key = SECRET_KEY
 # Initialize the user so you can add it to the blueprint
 init_user( app )
 app.register_blueprint( event )
-#app.register_blueprint( user )
+
 
 #google_map = googlemaps.Client(key='AIzaSyBD1TfgE6RnmaG6waS4_IzXbB9VmY08rqM')
 
@@ -26,7 +25,7 @@ def index():
     """ Landing page 
     """
     if current_user.is_authenticated:
-        context = {'user': current_user,
+        context = {
                    'matches':[{'Raiders football':{'longitude':'-74.168981','latitude':'41.0076139'} }]
                   }
 
@@ -46,4 +45,4 @@ def internal_error(error):
     return "500 error:{}".format( str(error) )
 """
 if __name__ == '__main__':
-    app.run(debug = False,  port=8000)
+    app.run(debug = True,  host = '0.0.0.0' )

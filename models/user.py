@@ -72,7 +72,7 @@ class User( Document ):
     def __unicode__(self):
         if self.last_name and self.first_name:
             return self.last_name + ','+self.first_name
-        return self.email
+        return self.username
 
     
 class Subscription( Document ):

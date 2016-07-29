@@ -58,7 +58,7 @@ def signup():
     address    = form.address.data
 
     # Check if they they exist already
-    context = {'error': None }
+    context = {}
     try:
         user = User.objects.get( username = username )
     except User.DoesNotExist:
@@ -83,7 +83,8 @@ def signup():
         return json.dumps( context )
 
     login_user( user )
-    return json.dumps(context)
+    return json.dumps( context )
+    
 
 @user.route('/signin', methods=['GET', 'POST'])
 def signin():
@@ -94,7 +95,7 @@ def signin():
         username = form.username.data
         password = form.password.data
 
-        reply = {'error':None }
+        context = {}
         if username:
             try:
                 user = User.objects.get( username = username )
@@ -102,23 +103,23 @@ def signin():
                 try:
                     user = User.objects.get( email = username )
                 except User.DoesNotExist:
-                    reply['errors'] = ['No such user or password']
-                    return json.dumps(reply)
+                    context['errors'] = ['No such user or password']
+                    return json.dumps(context)
         else:
-            reply['error'] = ['Enter a Username or Email address']
-            return json.dumps(reply)
+            context['error'] = ['Enter a Username or Email address']
+            return json.dumps(context)
  
         if user.check_password(password):
             login_user(user)
         else:
             reply['error'] = ['No such user or password']
         
-        return json.dumps(reply)
+        return json.dumps(context)
+ 
 
-
-@user.route('/logout')
+@user.route('/signout')
 @login_required
-def logout():
+def signout():
     """ Logout a user
     """
     logout_user()

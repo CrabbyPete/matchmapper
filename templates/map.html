@@ -1,4 +1,5 @@
-{% extends 'base.html' %} {% block js %}
+{% extends 'base.html' %} 
+{% block js %}
 <script type="text/javascript">
 
 function set_fields(pos){
@@ -27,7 +28,9 @@ $(document).ready(function() {
 
 
 </script>
-{% endblock %} {% block body_block %}
+{% endblock %} 
+
+{% block body_block %}
 <body>
 	<!--header section start-->
 
@@ -37,15 +40,21 @@ $(document).ready(function() {
 			<p class="logo">
 				<a href="index.html"><img
 					src="{{url_for('static',filename='img/logo.png')}}"
-					alt="Match mapper" title="Match mapper" /></a>
+					alt="MatchMapper" title="MatchMapper" /></a>
 			</p>
+			
 			<div id="search">
-				<form>
-					<input name="" type="text" />
+				<form action="{{url_for('event.search')}}" method='post'>
+					<input name="search_text" type="text" />
 					<input name="" type="submit" />
 				</form>
 			</div>
 
+								
+			{% if current_user.is_active %}
+			<div class="sign-up-area">
+			<a  id="sign-out" href="{{url_for('user.signout')}}">Sign Out</a>
+			</div>
 			<div class="top-rt-header">
 				<a class="add-event fancybox" href="#create-event">Add an Event</a>
 				<div id="create-event" style="display: none;">
@@ -54,7 +63,7 @@ $(document).ready(function() {
 
 						<div class="event-form" style="display: block;">
 							<form action="{{url_for('event.add')}}" method='post'>
-
+								
 								<div class="form-single-row">
 									<textarea name="Quick description of the game or sport"
 										      value="Quick description of the game or sport"
@@ -63,26 +72,28 @@ $(document).ready(function() {
 								</div>
 
 								<div class="event-lt">
-									<div class="form-single-row event-select">
-										<select name="">
-											<option>Sport</option>
-											<option>Select</option>
-										</select>
+									<div class="form-single-row">
+										<input  name="sport"
+											    value="Sport" 
+											    type="text" />
 									</div>
 								</div>
+								
 								<div class="event-rt">
-									<div class="form-single-row event-select">
-										<select name="">
-											<option>Level</option>
-											<option>Select</option>
-										</select>
+									<div class="form-single-row">
+										<input  name="level"
+											    value="Level" 
+											    type="text" />
 									</div>
 								</div>
+								
 								<div class="clear"></div>
 
 								<div class="form-single-row">
 									<textarea name="Address of the game"
-										value="Address of the game" id="address-game">Address of the game</textarea>
+										      value="Address of the game" 
+										      id="address-game">Town or Address
+									</textarea>
 								</div>
 
 								<div class="event-lt">
@@ -144,7 +155,6 @@ $(document).ready(function() {
 									<div class="clear"></div>
 								</div>
 
-
 								<div class="two-col-devide">
 									<div class="event-lt">
 										<div class="form-single-row">
@@ -154,10 +164,8 @@ $(document).ready(function() {
 
 									<div class="event-rt">
 										<div class="form-single-row">
-											<input name="Restrictions" value="Restrictions"
-												id="restrictions" type="text" />
+											<input name="Restrictions" value="Restrictions" id="restrictions" type="text" />
 										</div>
-
 									</div>
 									<div class="clear"></div>
 								</div>
@@ -165,7 +173,7 @@ $(document).ready(function() {
 								<div class="form-single-row">
 									<textarea name="Anything they want to add"
 										      value="Anything they want to add" 
-										      id="anything-want">Address of the game
+										      id="anything-want">Any comments or notes
 									</textarea>
 								</div>
 
@@ -184,7 +192,7 @@ $(document).ready(function() {
 								</div>
 
 								<div class="form-single-row">
-									<label class="left-label">Do you want opponents to call you? :</label> 
+									<label class="left-label"> Do you want opponents to call you? :</label> 
 									<label class="label_radio" for="sample-radio">
 										<input name="sample-radio1" id="sample-radio5" value="1"
 										       type="radio" />
@@ -198,7 +206,7 @@ $(document).ready(function() {
 								</div>
 
 								<div class="form-single-row">
-									<label class="left-label">Do you want opponents to call you? :</label> 
+									<label class="left-label"> Do you want opponents to email you? :</label> 
 									<label class="label_radio" for="sample-radio">
 										<input name="sample-radio1" 
 										       id="sample-radio6" value="1"
@@ -221,7 +229,7 @@ $(document).ready(function() {
 						</div>
 					</div>
 				</div>
-
+				{% else %}
 				<div class="sign-up-area">
 					<a class="fancybox" id="sign-in" href="#sign-in-show">Sign In</a>
 					<div id="sign-in-show" style="display: none;">
@@ -235,13 +243,16 @@ $(document).ready(function() {
 										<label>Enter Email</label>
 										<input name="username" type="email" value="" id="email" />
 									</div>
+									
 									<div class="form-single-row">
 										<label>Enter Password</label>
 										<input name="password" type="password" value="" id="password" />
 									</div>
+									
 									<div class="form-single-row">
 										<input type="submit" value="Login" />
 									</div>
+									
 									<div class="form-single-row">
 										<p class="forget-password">
 											<a href="{{url_for('user.forgot')}}">Forgot Password?</a>
@@ -256,7 +267,7 @@ $(document).ready(function() {
 					<span>or</span> <a class="fancybox" href="#sign-up">Sign up</a>
 					<div id="sign-up" style="display: none;">
 						<div class="signin-form">
-							<h3>Welcome to Matchmapper</h3>
+							<h3>Welcome to MatchMapper </h3>
 
 							<div class="sign-up-in-tabcont sign-up-form">
 								<form id="sign-up-form">
@@ -308,8 +319,12 @@ $(document).ready(function() {
 							</div>
 						</div>
 					</div>
+	
 				</div>
+				{% endif %}
+			
 			</div>
+	
 			<div class="clear"></div>
 			<div class="header-outer"></div>
 		</div>
@@ -332,13 +347,19 @@ $(document).ready(function() {
 							<a class="drop-sports" href="#"><span>Sports</span></a>
 							<div class="drop-sports-check" style="display: none;">
 								<ul>
-									<li class="drop-down-txt"><label class="myCheckbox">
-											<input type="checkbox" name="checkbox"> <span>Football</span>
-									</label></li>
+									<li class="drop-down-txt">
+										<label class="myCheckbox">
+											<input type="checkbox" name="checkbox"> 
+											<span>Football</span>
+										</label>
+									</li>
 
-									<li class="drop-down-txt"><label class="myCheckbox">
-											<input type="checkbox" name="checkbox"> <span>Baseball</span>
-									</label></li>
+									<li class="drop-down-txt">
+										<label class="myCheckbox">
+											<input type="checkbox" name="checkbox"> 
+											<span>Baseball</span>
+										</label>
+									</li>
 								</ul>
 							</div>
 						</div>
@@ -346,17 +367,6 @@ $(document).ready(function() {
 					</div>
 					<div>
 						<div id="map"></div>
-						<div class="map-pop">
-							<div class="map-pop-lt">
-								<img src="img/pop-map-img.jpg" alt="" title="" />
-							</div>
-							<div class="map-pop-rt">
-								<h4>Jaguars Team</h4>
-								<p>Lorem Ipsum is simply dummy text</p>
-							</div>
-							<div class="clear"></div>
-						</div>
-						<div class="map-pop-icon"></div>
 					</div>
 				</div>
 			</div>

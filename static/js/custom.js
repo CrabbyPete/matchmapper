@@ -20,20 +20,7 @@ $(function(){
 		});
 		
 	});	
-	
-
-	$('.drop-sports').click(function(){
-	  $('.drop-sports-check').slideToggle();
-	 });
-	 
-
-	$('.map-pop-icon').hover(function(){
-		$('.map-pop').fadeIn();
-	},function(){
-		$('.map-pop').fadeOut();
-	});
 		
-	
 });
 
 $(window).resize(function() {
@@ -47,11 +34,13 @@ $(window).resize(function() {
 
 function equalHeight(group) {
 	 var tallest = 0;
-	 group.each(function() {
-	 var thisHeight = jQuery(this).height();
-	 if(thisHeight > tallest) {
-	 tallest = thisHeight;
-	 }
+	 group.each(function() 
+	 {
+	 	var thisHeight = jQuery(this).height();
+	 	if(thisHeight > tallest) 
+	 	{ 
+	 		tallest = thisHeight;
+	 	}
 	 });
 	 group.height(tallest);
 }
@@ -116,14 +105,11 @@ $(function(){
 	  $('.drop-sports-check').slideToggle();
 	 });
 	 
-	 
-	 
-	$('.map-pop-icon').hover(function(){
-		$('.map-pop').fadeIn();
-	},function(){
-		$('.map-pop').fadeOut();
+	$('.drop-sports-check ul li label').on('click', function() {
+  		$(".drop-sports-check").hide();
 	});
-		
+	 
+
 	//Fancy jquery start		 
 	$('.fancybox').fancybox();
 	

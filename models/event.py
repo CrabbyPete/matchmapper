@@ -24,6 +24,7 @@ class Event( Document ):
     text         = BooleanField()
     call         = BooleanField()
     email        = BooleanField()
+    modified     = DateTimeField()
     contact      = ReferenceField('User')
 
     @queryset_manager

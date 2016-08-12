@@ -39,10 +39,11 @@ def index():
 @app.route('/about', methods=['GET'])
 def about():
     return render_template('about.html')
-"""
+
 @app.errorhandler(500)
 def internal_error(error):
     return "500 error:{}".format( str(error) )
-"""
+
+
 if __name__ == '__main__':
-    app.run(debug = True,  host = '0.0.0.0' )
+    app.run(debug = False,  host = '0.0.0.0' )

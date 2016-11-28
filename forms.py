@@ -53,4 +53,5 @@ class ForgotForm( Form ):
     phone    = TelField(u"Phone Number",[ validators.optional(), Phone() ] )
     submit   = SubmitField("")
 
-EventForm = model_form(Event)
+EventForm = model_form(Event, exclude = ('location'))
+pass

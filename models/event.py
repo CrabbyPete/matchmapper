@@ -4,9 +4,9 @@ from mongoengine    import ( Document,
                              GeoPointField, 
                              DateTimeField, 
                              BooleanField, 
-                             ReferenceField,
-                             queryset_manager
+                             ReferenceField
                             )
+                             
 
 class Event( Document ):
     name		 = StringField()
@@ -27,12 +27,16 @@ class Event( Document ):
     modified     = DateTimeField()
     contact      = ReferenceField('User')
 
-    @queryset_manager
-    def within(doc_cls, queryset, location_box ):
+
+    @classmethod
+    def near(cls, location, max_distance = 1000 ):
         """ Get all events with a geographic location
+        @param location: dict of longitude and latitude
+        @param max_distance: maximum distance in miles
         """
-        data = queryset.filter( user = user )
-        return data
-    
+        #query = cls.objects(location__near=[location['longitude'],location['latitude']], location__max_distance = max_distance )
+        query = cls.objects(location__near=[location['longitude'],location['latitude']], location__max_distance = max_distance )
+        return query
+
     def __unicode__(self):
         return self.name

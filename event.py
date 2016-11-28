@@ -1,7 +1,7 @@
 import json
 
 from datetime       import datetime 
-from flask          import Blueprint, request, render_template, redirect
+from flask          import Blueprint, request, redirect
 
 from models.event   import Event 
 from forms          import EventForm
@@ -28,18 +28,32 @@ def add():
                 )
     e = Event.objects( **data ).modify( upsert = True, set__modified = datetime.now() )
 
-    e.location     = geocode( data['where'] )
-    e.good_til     = form.good_til.data
+    try:
+        e.good_til     = form.good_til.data
+    except:
+        e.good_til = "forever"
     e.will_host    = form.will_host.data
     e.will_travel  = form.will_travel.data
     e.fees         = form.fees.data
     e.restrictions = form.restrictions.data
     e.comments     = form.comments.data
     e.text         = form.text.data
-    e.save()
     
-    context = {}
-    return json.dumps( context )
+    location       = geocode( data['where'] )
+    e.location     = [location['lng'],location['lat']]
+    
+    e.save()
+    return redirect('/')
+
+
+def events_near(location, max_distance):
+    """ Find events near a location
+    @param location: dict of latitude and longitude
+    @param max_distance: int of max miles
+    """
+    query = Event.near(location, max_distance)
+    return query
+
 
 @event.route('/search', methods=['POST'])
 def search():

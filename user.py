@@ -63,6 +63,8 @@ def signup():
         user = User.objects.get( username = username )
     except User.DoesNotExist:
         user = User( username = username )
+        user.first_name    = first_name
+        user.last_name     = last_name
         user.address       = address
         user.phone         = phone
         user.address       = address

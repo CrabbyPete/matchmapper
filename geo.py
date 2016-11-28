@@ -1,9 +1,13 @@
 import urllib,urllib2,time,json,requests
+
+from geopy.distance import vincenty
 """
 
 
 """
 root_url = "http://maps.googleapis.com/maps/api/geocode/json?"
+distance_url = "https://maps.googleapis.com/maps/api/distancematrix/json?" #origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&key=YOUR_API_KEY
+
 def walk(seq, look_for ):
     """
     Walk through the dictionary to find a value
@@ -61,8 +65,24 @@ def geocode(addr):
 
     return None
 
+def distance( origin, dest ):
+    values = "origins={},{}%20destinations={},{}".format(origin['lat'],origin['lng'], dest['lat'],dest['lng'])
+    #data = urllib.urlencode(values)
+    url = distance_url+values
+    response = requests.get( url )
+    if response.ok:
+        geodat = json.loads(response.text)
+        return geodat
+    return None
+
 if __name__ == '__main__':
     reply = geocode('07481')
-    reply = geocode( '280 Monroe Ave, Wyckoff NJ 07481')
+    me = geocode( '280 Monroe Ave, Wyckoff NJ 07481')
     reply = reverse_geocode(reply['lat'],reply['lng'] )
+    allendale = geocode('Crestwood Lake, Allendale, NJ 07401')
+    #reply = distance( me, allendale )
+    distance = vincenty( ( float(me['lat']),float(me['lng']) ),( float(allendale['lat']),float(allendale['lng']) ) )
+    print distance.miles
+    
+    #reply = distance( reverse_geocode(me['lat'],me['lng']), reverse_geocode(allendale['lat'],allendale['lng']) )
     pass

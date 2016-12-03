@@ -3,7 +3,7 @@ import requests
 import json
 
 # Import Flask
-from flask                  import Flask, render_template, request
+from flask                  import Flask, render_template, request, jsonify
 
 # Local Locals
 from config                 import SECRET_KEY
@@ -20,9 +20,7 @@ app.secret_key = SECRET_KEY
 init_user( app )
 app.register_blueprint( event )
 
-
 #google_map = googlemaps.Client(key='AIzaSyBD1TfgE6RnmaG6waS4_IzXbB9VmY08rqM')
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -42,25 +40,35 @@ def index():
             here ={}
         
         
-        
     events = Event.near( here )
     context = {'matches':[]}
     for event in events:
         point = {'longitude':str(event.location[0]),
                  'latitude' :str(event.location[1]),
-                 'title':event.name                    
+                 'title':event.name,  
+                 'detail':event.id                  
                  }
             
         context['matches'].append( point )
-            
-
-        
+                    
     return render_template( 'map.html', **context )
 
 @app.route('/ajax')
 def ajax():
-    username = request.form['username']
-    return jsonify(username=username)
+    event_id = request.args['id']
+    record = Event.objects.get(id = event_id)
+    reply = dict( name         = record.name,
+                  sport        = record.sport,
+                  level        = record.level,
+                  where        = record.where,
+                  when         = record.when,
+                  good_til     = record.good_til,
+                  will_host    = record.will_host,
+                  will_travel  = record.will_travel,
+                  fees         = record.fees
+                )
+    data = jsonify(reply)
+    return data
 
 @app.route('/about', methods=['GET'])
 def about():

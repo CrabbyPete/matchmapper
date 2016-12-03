@@ -57,5 +57,6 @@ def events_near(location, max_distance):
 
 @event.route('/search', methods=['POST'])
 def search():
-    search = request.form.text.data
+    search = request.form['search_text']
+    place = geocode( search )
     return redirect('/')

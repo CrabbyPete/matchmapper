@@ -13,16 +13,16 @@ from user                   import init_user, current_user
 from event                  import event
 from models.event           import Event
 
-app = Flask(__name__)
-app.secret_key = SECRET_KEY
+application = Flask(__name__, static_url_path='/static')
+application.secret_key = SECRET_KEY
 
 # Initialize the user so you can add it to the blueprint
-init_user( app )
-app.register_blueprint( event )
+init_user( application )
+application.register_blueprint( event )
 
 #google_map = googlemaps.Client(key='AIzaSyBD1TfgE6RnmaG6waS4_IzXbB9VmY08rqM')
 
-@app.route('/', methods=['GET', 'POST'])
+@application.route('/', methods=['GET', 'POST'])
 def index():
     """ Landing page 
     """
@@ -65,7 +65,7 @@ def index():
     
     return render_template( 'map.html', **context )
 
-@app.route('/ajax')
+@application.route('/ajax')
 def ajax():
     event_id = request.args['id']
     record = Event.objects.get(id = event_id)
@@ -82,14 +82,14 @@ def ajax():
     data = jsonify(reply)
     return data
 
-@app.route('/about', methods=['GET'])
+@application.route('/about', methods=['GET'])
 def about():
     return render_template('about.html')
 
-@app.errorhandler(500)
+@application.errorhandler(500)
 def internal_error(error):
     return "500 error:{}".format( str(error) )
 
 
 if __name__ == '__main__':
-    app.run(debug = False,  host = '0.0.0.0' )
+    application.run(debug = False,  host = '0.0.0.0' )

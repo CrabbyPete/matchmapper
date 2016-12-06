@@ -26,10 +26,18 @@ app.register_blueprint( event )
 def index():
     """ Landing page 
     """
+    here = {}
+    if request.args:
+        try:
+            here = {'longitude':request.args['lng'],'latitude':request.args['lat']}
+        except:
+            pass
+    
     ip = request.remote_addr
-    if current_user.is_authenticated:
-        here = {'longitude':current_user.location[0],'latitude':current_user.location[1]}
-    else:
+    if current_user.is_authenticated and not here:
+        here = {'longitude':current_user.location[1],'latitude':current_user.location[0]}
+    
+    elif not here:
         ip = request.remote_addr
         url = 'http://freegeoip.net/json/{}'.format(ip)
         reply = requests.get(url)
@@ -40,17 +48,21 @@ def index():
             here ={}
         
         
+    
+    context = { 'center':here, 'matches':[]}
     events = Event.near( here )
-    context = {'matches':[]}
-    for event in events:
-        point = {'longitude':str(event.location[0]),
-                 'latitude' :str(event.location[1]),
-                 'title':event.name,  
-                 'detail':event.id                  
-                 }
+    try:
+        for event in events:
+            point = {'longitude':str(event.location[0]),
+                     'latitude' :str(event.location[1]),
+                     'title':event.name,  
+                     'detail':event.id                  
+                    }
+            context['matches'].append( point )
+    except Exception, e:
+        pass
             
-        context['matches'].append( point )
-                    
+    
     return render_template( 'map.html', **context )
 
 @app.route('/ajax')

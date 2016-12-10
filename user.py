@@ -85,7 +85,7 @@ def signup():
         return json.dumps( context )
 
     login_user( user )
-    return json.dumps( context )
+    return redirect('/')
     
 
 @user.route('/signin', methods=['GET', 'POST'])

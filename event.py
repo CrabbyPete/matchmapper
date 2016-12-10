@@ -26,7 +26,8 @@ def add():
                  when    = form.when.data,
                  contact = current_user.id
                 )
-    e = Event.objects( **data ).modify( upsert = True, set__modified = datetime.now() )
+    
+    e = Event.objects( **data ).modify( upsert = True, new = True, set__modified = datetime.now() )
 
     try:
         e.good_til     = form.good_til.data
@@ -40,10 +41,14 @@ def add():
     e.text         = form.text.data
     
     location       = geocode( data['where'] )
-    e.location     = [location['lng'],location['lat']]
+    if location:
+        e.location     = [location['lng'],location['lat']]
+    else:
+        e.location = current_user.location
     
     e.save()
     return redirect('/')
+
 
 
 def events_near(location, max_distance):

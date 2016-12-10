@@ -37,5 +37,11 @@ class Event( Document ):
         query = cls.objects(location__near=[location['longitude'],location['latitude']])#, location__max_distance = max_distance )
         return query
 
+    @classmethod
+    def find_or_create(cls):
+        pass
+        
+        
+        
     def __unicode__(self):
         return self.name

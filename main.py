@@ -27,9 +27,14 @@ def index():
     """ Landing page 
     """
     here = {}
+    filter = None
     if request.args:
         try:
-            here = {'longitude':request.args['lng'],'latitude':request.args['lat']}
+            here = {'longitude':float(request.args['lng']),'latitude':float(request.args['lat'])}
+        except:
+            pass
+        try:
+            filter = request.args['filter']
         except:
             pass
     
@@ -47,7 +52,6 @@ def index():
         else:
             here ={}
         
-        
     
     context = { 'center':here, 'matches':[]}
     events = Event.near( here )
@@ -56,7 +60,8 @@ def index():
             point = {'longitude':str(event.location[0]),
                      'latitude' :str(event.location[1]),
                      'title':event.name,  
-                     'detail':event.id                  
+                     'detail':event.id,
+                     'sport':event.sport.lower()                
                     }
             context['matches'].append( point )
     except Exception, e:

@@ -117,7 +117,7 @@ def signin():
             reply['error'] = ['No such user or password']
             return json.dumps(context)
         
-        return redirect('/')
+        return json.dumps({})
  
 
 @user.route('/signout')

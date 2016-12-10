@@ -59,4 +59,4 @@ def events_near(location, max_distance):
 def search():
     search = request.form['search_text']
     place = geocode( search )
-    return redirect('/')
+    return redirect('/?lng={}&lat={}'.format(place[u'lng'], place[u'lat']))

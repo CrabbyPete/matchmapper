@@ -34,8 +34,7 @@ class Event( Document ):
         @param location: dict of longitude and latitude
         @param max_distance: maximum distance in miles
         """
-        #query = cls.objects(location__near=[location['longitude'],location['latitude']], location__max_distance = max_distance )
-        query = cls.objects(location__near=[location['longitude'],location['latitude']], location__max_distance = max_distance )
+        query = cls.objects(location__near=[location['longitude'],location['latitude']])#, location__max_distance = max_distance )
         return query
 
     def __unicode__(self):

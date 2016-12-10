@@ -38,9 +38,20 @@ function set_fields(pos){
 
 
 $(document).ready(function() {
-	if (navigator.geolocation) {
-	   navigator.geolocation.getCurrentPosition( set_fields );
-	}
+	{%if center %}
+		var pos = {'coords':{}};
+		pos.coords = {
+			longitude:{{center.longitude}},
+			latitude:{{center.latitude}}
+		};
+		
+		set_fields( pos );
+	
+	{% else %}
+		if (navigator.geolocation) {
+	   		navigator.geolocation.getCurrentPosition( set_fields );
+		}
+	{% endif %}
 	
 	$(".fancybox").fancybox();
 });
@@ -377,6 +388,13 @@ $(document).ready(function() {
 										<label class="myCheckbox">
 											<input type="checkbox" name="checkbox"> 
 											<span>Baseball</span>
+										</label>
+									</li>
+									
+									<li class="drop-down-txt">
+										<label class="myCheckbox">
+											<input type="checkbox" name="checkbox"> 
+											<span>Soccer</span>
 										</label>
 									</li>
 								</ul>

@@ -10,6 +10,7 @@ from config                 import SECRET_KEY
 
 # Blueprint apps
 from user                   import init_user, current_user
+from forms                  import SignInForm
 from event                  import event
 from models.event           import Event
 
@@ -48,8 +49,8 @@ def index():
             here ={}
         
         
-    
-    context = { 'center':here, 'matches':[]}
+    form = SignInForm(request.form)
+    context = { 'form':form,'center':here, 'matches':[]}
     events = Event.near( here )
     try:
         for event in events:
@@ -92,4 +93,4 @@ def internal_error(error):
 
 
 if __name__ == '__main__':
-    application.run(debug = False,  host = '0.0.0.0' )
+    application.run(debug = True,  host = '0.0.0.0' )

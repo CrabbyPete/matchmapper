@@ -18,7 +18,7 @@ from flask.ext.mongoengine.wtf.orm  import model_form
 class ValidationError( Exception ):
     pass
 
-class SigninForm(Form):
+class SignInForm(Form):
     username = TextField( "Enter Email",
         [ validators.Email(message= u'That\'s not a valid email address.'),
           validators.Length( min = 6, max = 45)

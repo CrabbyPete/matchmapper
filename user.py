@@ -13,7 +13,7 @@ from flask.ext.login        import ( LoginManager,
                                     )
 
 from models.user            import User
-from forms                  import SigninForm, SignUpForm, ForgotForm
+from forms                  import SignInForm, SignUpForm, ForgotForm
 
 from geo                    import geocode
 from config                 import EMAIL
@@ -92,32 +92,35 @@ def signup():
 def signin():
     """ Login a user
     """
-    form = SigninForm(request.form)
+    form = SignInForm(request.form)
     if request.method == 'POST' and form.validate():
         username = form.username.data
         password = form.password.data
 
-        context = {}
         if username:
             try:
                 user = User.objects.get( username = username )
             except User.DoesNotExist:
-                try:
-                    user = User.objects.get( email = username )
-                except User.DoesNotExist:
-                    context['errors'] = ['No such user or password']
-                    return json.dumps(context)
+                form.username.errors = ['No such user or password']
+                context = {'form':form}
+                return render_template('signin.html', **context )
+
         else:
-            context['error'] = ['Enter a Username or Email address']
-            return json.dumps(context)
- 
+            form.username.errors = ['Enter an Email address']
+            context = {'form':form}
+            return render_template('signin.html', **context )
+
         if user.check_password(password):
             login_user(user)
+            return redirect('/')
         else:
-            reply['error'] = ['No such user or password']
-            return json.dumps(context)
-        
-        return redirect('/')
+            form.username.errors = ['No such user or password']
+            context = {'form':form}
+            return render_template('signin.html', **context )
+
+    # Not a POST or invalid form
+    context = {'form':form}
+    return render_template( 'signin.html', **context )
  
 
 @user.route('/signout')

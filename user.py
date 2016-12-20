@@ -87,7 +87,6 @@ def signup():
     login_user( user )
     return redirect('/')
     
-
 @user.route('/signin', methods=['GET', 'POST'])
 def signin():
     """ Login a user
@@ -102,26 +101,20 @@ def signin():
                 user = User.objects.get( username = username )
             except User.DoesNotExist:
                 form.username.errors = ['No such user or password']
-                context = {'form':form}
-                return render_template('signin.html', **context )
-
+            else:
+                if not user.check_password(password):
+                    form.username.errors = ['No such user or password']
+                else:
+                    login_user(user)
+                    return redirect('/') 
         else:
-            form.username.errors = ['Enter an Email address']
-            context = {'form':form}
-            return render_template('signin.html', **context )
-
-        if user.check_password(password):
-            login_user(user)
-            return redirect('/')
-        else:
-            form.username.errors = ['No such user or password']
-            context = {'form':form}
-            return render_template('signin.html', **context )
-
-    # Not a POST or invalid form
+            form.username.errors = ['Enter an email address']
+   
+    # Not a POST or errors
     context = {'form':form}
-    return render_template( 'signin.html', **context )
- 
+    content = render_template( 'signin.html', **context )
+    return content
+
 
 @user.route('/signout')
 @login_required

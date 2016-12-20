@@ -111,7 +111,7 @@ $(function(){
 	 
 
 	//Fancy jquery start		 
-	$('.fancybox').fancybox();
+	$('.fancybox').fancybox({onClose: function(){window.location.reload()}});
 	
 });
 

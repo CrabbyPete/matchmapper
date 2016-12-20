@@ -57,7 +57,8 @@ def index():
             point = {'longitude':str(event.location[0]),
                      'latitude' :str(event.location[1]),
                      'title':event.name,  
-                     'detail':event.id                  
+                     'detail':event.id,
+                     'sport':event.sport.lower()                  
                     }
             context['matches'].append( point )
     except Exception, e:

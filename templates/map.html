@@ -72,7 +72,7 @@ function set_fields(pos){
 	gm.addMarker({ lat: {{match.latitude}}, lng: {{match.longitude}}, 
 		           details:"{{match.detail}}", 
 		           title:"{{match.title}}", 
-		           icon:"{{url_for('static',filename='img/football.png')}}",
+		           icon:"{{url_for('static',filename='img/{}.png'.format(match.sport))}}",
 		           click: mark_info 
 		         });
 	{% endfor %}

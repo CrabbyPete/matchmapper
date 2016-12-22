@@ -72,20 +72,22 @@ $(function(){
 		
 	});	
 	
-	$("#sign-in-form").bind( "submit", function() 
-	{
-    	$.ajax({ type : "POST",
-                 cache : false,
-                 url: "/signin",
-                 data: $(this).serializeArray(),
-                 success:function(data)
-                 { 
-                 	$.fancybox(data); 
-                 }
-              });
-        return false;
-	});
+	function send_ajax(e){
+		$.ajax({ type : "POST",
+            cache : false,
+            url: "/signin",
+            data: $(this).serialize(),
+            success:function(data)
+            { 	
+            	parent.jQuery.fancybox(data);
+            }
+        });
+	 
+	   	return false;		
+	}
 	
+	$("#sign-in-form").on( "submit", send_ajax ); 
+
 	
 	$("#sign-up-form").bind( "submit", function() 
 	{
@@ -111,7 +113,7 @@ $(function(){
 	 
 
 	//Fancy jquery start		 
-	$('.fancybox').fancybox({onClose: function(){window.location.reload()}});
+	$('.fancybox').fancybox();
 	
 });
 

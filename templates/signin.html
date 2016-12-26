@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% from "_formhelpers.html" import render_field %}
+
+
+{% block body_block %}
+<div id="sign-in-show">
+	<div class="signin-form">
+		<h3>Welcome to Matchmapper</h3>
+
+		<div class="sign-up-in-tabcont" style="display: block;">
+
+			<form id="sign-in-form" method='post' action="{{url_for('user.signin')}}">
+				<div class="form-single-row">
+				{{ render_field( form.username,id='email') }}
+				</div>
+
+				<div class="form-single-row">
+				{{ render_field( form.password,id='password') }}
+				</div>
+
+				<div class="form-single-row">
+					<input type="submit" value="Login" />
+				</div>
+
+				<div class="form-single-row">
+					<p class="forget-password">
+						<a href="{{url_for('user.forgot')}}">Forgot Password?</a>
+					</p>
+				</div>
+			</form>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+{% endblock %}

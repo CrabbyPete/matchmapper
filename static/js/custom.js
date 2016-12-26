@@ -72,37 +72,6 @@ $(function(){
 		
 	});	
 	
-	function send_ajax(e){
-		$.ajax({ type : "POST",
-            cache : false,
-            url: "/signin",
-            data: $(this).serialize(),
-            success:function(data)
-            { 	
-            	parent.jQuery.fancybox(data);
-            }
-        });
-	 
-	   	return false;		
-	}
-	
-	$("#sign-in-form").on( "submit", send_ajax ); 
-
-	
-	$("#sign-up-form").bind( "submit", function() 
-	{
-    	$.ajax({ type : "POST",
-                 cache : false,
-                 url: "/signup",
-                 data: $(this).serializeArray(),
-                 success:function(data)
-                 { 
-                 	$.fancybox(data); 
-                 }
-              });
-        return false;
-	});
-	
 	$('.drop-sports').click(function(){
 	  $('.drop-sports-check').slideToggle();
 	 });
@@ -111,10 +80,6 @@ $(function(){
   		$(".drop-sports-check").hide();
 	});
 	 
-
-	//Fancy jquery start		 
-	$('.fancybox').fancybox();
-	
 });
 
 $(window).resize(function() {

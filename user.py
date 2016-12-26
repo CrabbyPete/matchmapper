@@ -106,7 +106,7 @@ def signin():
                     form.username.errors = ['No such user or password']
                 else:
                     login_user(user)
-                    return redirect('/') 
+                    return  render_template('close-iframe.html')
         else:
             form.username.errors = ['Enter an email address']
    

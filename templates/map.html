@@ -95,6 +95,16 @@ $(document).ready(function() {
 		}
 	{% endif %}
 
+	
+	 $("#sign-in").click(function() {
+		  $.fancybox({ afterClose:function(){
+			  window.location.reload(true);} 
+		  });
+	 });
+	
+	$('.fancybox').fancybox({ afterClose:function(){
+		  						window.location.reload(true); } 
+	});
 });
 
 
@@ -301,7 +311,7 @@ $(document).ready(function() {
 				</div>
 				{% else %}
 				<div class="sign-up-area">
-					<a class="fancybox fancybox.iframe" id="sign-in" href="{{url_for('user.signin')}}">Sign In</a>
+					<a class="fancybox fancybox.iframe"  id="sign-in" href="{{url_for('user.signin')}}">Sign In</a>
 					<div id="sign-in-show" style="display: none;">
 						<div class="signin-form">
 							<h3>Welcome to Matchmapper</h3>

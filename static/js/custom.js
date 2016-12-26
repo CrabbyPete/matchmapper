@@ -72,35 +72,6 @@ $(function(){
 		
 	});	
 	
-	$("#sign-in-form").bind( "submit", function() 
-	{
-    	$.ajax({ type : "POST",
-                 cache : false,
-                 url: "/signin",
-                 data: $(this).serializeArray(),
-                 success:function(data)
-                 { 
-                 	$.fancybox(data); 
-                 }
-              });
-        return false;
-	});
-	
-	
-	$("#sign-up-form").bind( "submit", function() 
-	{
-    	$.ajax({ type : "POST",
-                 cache : false,
-                 url: "/signup",
-                 data: $(this).serializeArray(),
-                 success:function(data)
-                 { 
-                 	$.fancybox(data); 
-                 }
-              });
-        return false;
-	});
-	
 	$('.drop-sports').click(function(){
 	  $('.drop-sports-check').slideToggle();
 	 });
@@ -109,10 +80,6 @@ $(function(){
   		$(".drop-sports-check").hide();
 	});
 	 
-
-	//Fancy jquery start		 
-	$('.fancybox').fancybox();
-	
 });
 
 $(window).resize(function() {

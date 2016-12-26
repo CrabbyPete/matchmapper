@@ -13,7 +13,7 @@ from flask.ext.login        import ( LoginManager,
                                     )
 
 from models.user            import User
-from forms                  import SigninForm, SignUpForm, ForgotForm
+from forms                  import SignInForm, SignUpForm, ForgotForm
 
 from geo                    import geocode
 from config                 import EMAIL
@@ -85,40 +85,36 @@ def signup():
         return json.dumps( context )
 
     login_user( user )
-    return json.dumps( context )
+    return redirect('/')
     
-
 @user.route('/signin', methods=['GET', 'POST'])
 def signin():
     """ Login a user
     """
-    form = SigninForm(request.form)
+    form = SignInForm(request.form)
     if request.method == 'POST' and form.validate():
         username = form.username.data
         password = form.password.data
 
-        context = {}
         if username:
             try:
                 user = User.objects.get( username = username )
             except User.DoesNotExist:
-                try:
-                    user = User.objects.get( email = username )
-                except User.DoesNotExist:
-                    context['errors'] = ['No such user or password']
-                    return json.dumps(context)
+                form.username.errors = ['No such user or password']
+            else:
+                if not user.check_password(password):
+                    form.username.errors = ['No such user or password']
+                else:
+                    login_user(user)
+                    return  render_template('close-iframe.html')
         else:
-            context['error'] = ['Enter a Username or Email address']
-            return json.dumps(context)
- 
-        if user.check_password(password):
-            login_user(user)
-        else:
-            reply['error'] = ['No such user or password']
-            return json.dumps(context)
-        
-        return json.dumps({})
- 
+            form.username.errors = ['Enter an email address']
+   
+    # Not a POST or errors
+    context = {'form':form}
+    content = render_template( 'signin.html', **context )
+    return content
+
 
 @user.route('/signout')
 @login_required

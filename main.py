@@ -10,6 +10,7 @@ from config                 import SECRET_KEY
 
 # Blueprint apps
 from user                   import init_user, current_user
+from forms                  import SignInForm
 from event                  import event
 from models.event           import Event
 
@@ -52,8 +53,10 @@ def index():
         else:
             here ={}
         
-    
-    context = { 'center':here, 'matches':[]}
+
+        
+    form = SignInForm(request.form)
+    context = { 'form':form,'center':here, 'matches':[]}
     events = Event.near( here )
     try:
         for event in events:
@@ -61,7 +64,7 @@ def index():
                      'latitude' :str(event.location[1]),
                      'title':event.name,  
                      'detail':event.id,
-                     'sport':event.sport.lower()                
+                     'sport':event.sport.lower()                  
                     }
             context['matches'].append( point )
     except Exception, e:

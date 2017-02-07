@@ -41,7 +41,6 @@ class SignUpForm(Form):
     preference = RadioField('Check on best contact', choices=[('phone', 'Phone'),('email', 'Email')], default='phone')
     submit     = SubmitField("Sign Up")
 
-UserForm = model_form(User)
 
 class Phone( validators.Regexp ):
     def __init__(self):

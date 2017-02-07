@@ -3,7 +3,7 @@ import json
 
 from mailer                 import Mailer, Message
 
-from flask                  import Blueprint, render_template, request, redirect
+from flask                  import Blueprint, render_template, request, redirect, session
 
 from flask.ext.login        import ( LoginManager, 
                                      login_required, 
@@ -45,47 +45,45 @@ def signup():
     """ Signup a new user 
     """
     form = SignUpForm(request.form)
-    if not request.method == 'POST'or not form.validate():
-        context = { 'error':"Not valid",'form':form }
-        return json.dumps(context)
+    if request.method == 'POST' and form.validate():
 
-    first_name = form.first_name.data
-    last_name  = form.last_name.data
-    username   = form.username.data
-    password   = form.password.data
-    preference = form.preference.data
-    phone      = form.phone.data
-    address    = form.address.data
+        first_name = form.first_name.data
+        last_name  = form.last_name.data
+        username   = form.username.data
+        password   = form.password.data
+        preference = form.preference.data
+        phone      = form.phone.data
+        address    = form.address.data
 
-    # Check if they they exist already
-    context = {}
-    try:
-        user = User.objects.get( username = username )
-    except User.DoesNotExist:
-        user = User( username = username )
-        user.first_name    = first_name
-        user.last_name     = last_name
-        user.address       = address
-        user.phone         = phone
-        user.address       = address
-        user.preference    = preference
-        user.set_password( password )
+        # Check if they they exist already
         try:
-            local = geocode( user.address )
-            user.location = [ float(local['lat']), float(local['lng']) ]
-        except Exception, e:
-            pass
+            user = User.objects.get( username = username )
+        except User.DoesNotExist:
+            user = User( username = username )
+            user.first_name    = first_name
+            user.last_name     = last_name
+            user.address       = address
+            user.phone         = phone
+            user.address       = address
+            user.preference    = preference
+            user.set_password( password )
+            
+            try:
+                local = geocode( user.address )
+                user.location = [ float(local['lat']), float(local['lng']) ]
+            except Exception, e:
+                pass
 
-        try:
-            user.save()
-        except Exception, e:
-            print e
-    else:
-        context = { 'error':'User already exists', 'form':form }
-        return json.dumps( context )
-
-    login_user( user )
-    return redirect('/')
+            try:
+                user.save()
+            except Exception, e:
+                print e
+        else:
+            form.username.errors = "User already exists"
+  
+    context = {'form':form}
+    content = render_template( 'signup.html', **context )
+    return content
     
 @user.route('/signin', methods=['GET', 'POST'])
 def signin():
@@ -115,6 +113,9 @@ def signin():
     content = render_template( 'signin.html', **context )
     return content
 
+@user.route('/settings', methods=['GET', 'POST'])
+def settings():
+    pass
 
 @user.route('/signout')
 @login_required
@@ -123,6 +124,8 @@ def signout():
     """
     logout_user()
     return redirect('/')
+
+
 
 
 def send_email( user, password ):
@@ -176,3 +179,31 @@ def forgot():
     else:
         context = {'form':form}
         return render_template('forgot.html', **context )
+
+@user.route( '/sports', methods=['GET','POST'] )
+def sports():
+    sport = request.form['name'].lower()
+    checked = True if request.form['checked'] == 'true' else False
+ 
+ 
+    if current_user.is_anonymous:
+        if not 'sports' in session:
+            session['sports'] = []
+        if checked:
+            if not sport in session['sports']:
+                session['sports'].append( sport )
+        else:
+            if sport in session['sports']:
+                session['sports'].remove(sport)
+    
+    else:
+        if checked:
+            if not sport in current_user.sports:
+                current_user.sports.append( sport )
+        else:
+            if sport in current_user.sports:
+                current_user.sports.remove(sport)
+
+        current_user.save()
+    return redirect('/')
+    

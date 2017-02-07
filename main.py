@@ -3,7 +3,7 @@ import requests
 import json
 
 # Import Flask
-from flask                  import Flask, render_template, request, jsonify
+from flask                  import Flask, render_template, request, jsonify, session
 
 # Local Locals
 from config                 import SECRET_KEY
@@ -28,36 +28,40 @@ def index():
     """ Landing page 
     """
     here = {}
-    filter = None
+    sport_filter = []
+    
     if request.args:
         try:
             here = {'longitude':float(request.args['lng']),'latitude':float(request.args['lat'])}
         except:
             pass
-        try:
-            filter = request.args['filter']
-        except:
-            pass
-    
-    ip = request.remote_addr
-    if current_user.is_authenticated and not here:
-        here = {'longitude':current_user.location[1],'latitude':current_user.location[0]}
-    
-    elif not here:
-        ip = request.remote_addr
-        url = 'http://freegeoip.net/json/{}'.format(ip)
-        reply = requests.get(url)
-        if reply.ok:
-            data = json.loads( reply.text)
-            here = {'longitude':data['longitude'],'latitude':data['latitude']}
-        else:
-            here ={}
         
-
+    ip = request.remote_addr
+        
+    if current_user.is_authenticated:
+        if not here:
+            here = {'longitude':current_user.location[1],'latitude':current_user.location[0]}
+        sport_filter = current_user.sports
+    
+    else:
+        if not here:
+            ip = request.remote_addr
+            url = 'http://freegeoip.net/json/{}'.format(ip)
+            reply = requests.get(url)
+            if reply.ok:
+                data = json.loads( reply.text)
+                here = {'longitude':data['longitude'],'latitude':data['latitude']}
+            else:
+                here ={}
+        if 'sports' in session:
+            sport_filter = session['sports']
+        else:
+            sport_filter = session['sports'] = []
         
     form = SignInForm(request.form)
-    context = { 'form':form,'center':here, 'matches':[]}
-    events = Event.near( here )
+    context = { 'form':form,'center':here, 'matches':[] }
+    events, sports = Event.near( here, sport_filter )
+
     try:
         for event in events:
             point = {'longitude':str(event.location[0]),
@@ -67,7 +71,10 @@ def index():
                      'sport':event.sport.lower()                  
                     }
             context['matches'].append( point )
-    except Exception, e:
+        
+        context['sports'] = sports
+              
+    except Exception as e:
         pass
             
     

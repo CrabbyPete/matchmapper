@@ -9,7 +9,7 @@ from mongoengine    import ( Document,
                              
 
 class Event( Document ):
-    name		 = StringField()
+    name         = StringField()
     sport        = StringField()
     level        = StringField()
     where        = StringField()
@@ -29,14 +29,30 @@ class Event( Document ):
 
 
     @classmethod
-    def near(cls, location, max_distance = 1000 ):
+    def near(cls, location, sport_filter = [], max_distance = 1000 ):
         """ Get all events with a geographic location
         @param location: dict of longitude and latitude
         @param max_distance: maximum distance in miles
         """
-        query = cls.objects(location__near=[location['longitude'],location['latitude']])#, location__max_distance = max_distance )
-        return query
-
+   
+        query = cls.objects(location__near=[location['longitude'],location['latitude']], location__max_distance = max_distance )
+        
+        sports = {}
+        events = []
+        for event in query:
+            if not event.sport.lower() in sports:
+                sports[event.sport.lower()] = event.sport.lower() in sport_filter
+                
+            if sport_filter:
+                if event.sport.lower() in sport_filter:
+                    events.append( event )
+            else:
+                events.append( event )
+        return events, sports
+        
+        
+        
+    
     @classmethod
     def find_or_create(cls):
         pass

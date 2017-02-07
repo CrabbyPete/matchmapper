@@ -8,7 +8,8 @@ from mongoengine    import ( Document,
                              EmailField, 
                              GeoPointField, 
                              DateTimeField, 
-                             BooleanField, 
+                             BooleanField,
+                             ListField,
                              ReferenceField,
                              CASCADE
                             )
@@ -34,6 +35,7 @@ class User( Document ):
     address       = StringField( default = None)
     preference    = StringField()
     location	  = GeoPointField()
+    sports        = ListField( StringField( max_length = 30) )
     joined        = DateTimeField( default = datetime.now() )
 
     # Login booleans

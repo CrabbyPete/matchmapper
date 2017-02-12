@@ -1,25 +1,31 @@
 
-import re
 
-from models.user                    import User
-from models.event                   import Event
-from wtforms                        import ( Form, 
-                                             TextField, 
-                                             PasswordField, 
-                                             BooleanField,
-                                             RadioField, 
-                                             SubmitField    
-                                           )
-from flask.ext.wtf.html5            import  TelField
+from models.user            import User
+from models.event           import Event
 
-from wtforms                        import validators
-from flask.ext.mongoengine.wtf.orm  import model_form
+from wtforms                import ( validators,
+                                     Form, 
+                                     StringField, 
+                                     PasswordField, 
+                                     BooleanField,
+                                     RadioField, 
+                                     DateField,
+                                     TimeField,
+                                     SubmitField,
+                                     TelField
+                                    )
+
+
 
 class ValidationError( Exception ):
     pass
 
+
+
+
+
 class SignInForm(Form):
-    username = TextField( "Enter Email",
+    username = StringField( "Enter Email",
         [ validators.Email(message= u'That\'s not a valid email address.'),
           validators.Length( min = 6, max = 45)
         ]
@@ -28,16 +34,16 @@ class SignInForm(Form):
 
 
 class SignUpForm(Form):
-    first_name  = TextField("First Name")
-    last_name   = TextField("Last Name")
+    first_name  = StringField("First Name")
+    last_name   = StringField("Last Name")
     
-    username = TextField("Email Address", [ validators.Email(message= u'That\'s not a valid email address.'),
+    username = StringField("Email Address", [ validators.Email(message= u'That\'s not a valid email address.'),
                                             validators.Length( min = 6, max = 45)
                                           ]
     )
-    password   = PasswordField("Password",[ validators.Required() ])
-    phone      = TextField("Cell Phone Number", [validators.Length( min = 6, max = 45)] )
-    address    = TextField("Address")
+    password   = PasswordField("Password")
+    phone      = TelField()
+    address    = StringField("Address")
     preference = RadioField('Check on best contact', choices=[('phone', 'Phone'),('email', 'Email')], default='phone')
     submit     = SubmitField("Sign Up")
 
@@ -48,9 +54,28 @@ class Phone( validators.Regexp ):
                                      message = "That\'s not a valid phone number")
  
 class ForgotForm( Form ):
-    email    = TextField( u"Email" )
-    phone    = TelField(u"Phone Number",[ validators.optional(), Phone() ] )
+    email    = StringField( u"Email" )
+    phone    = TelField()
     submit   = SubmitField("")
 
-EventForm = model_form(Event, exclude = ('location'))
+class EventForm( Form ):
+    """ Define the user form for an event
+    """
+    name         = StringField(label = "Describe the event")
+    sport        = StringField(label = "What sport is this?")
+    level        = StringField()
+    where        = StringField()
+    location     = StringField()
+    day          = DateField( label = "What date are you looking for?")
+    time         = TimeField( label = "What time do you want to start?")
+    will_host    = RadioField(label = "Will you host the match?", choices=[ (1,"Yes"),(0,"No") ], coerce = int )
+    will_travel  = RadioField(choices=[ (1,"Yes"),(0,"No") ], coerce = int)
+    fees         = StringField()
+    restrictions = StringField()
+    comments     = StringField()
+    text         = RadioField(choices=[ (1,"Yes"),(0,"No") ], coerce = int)
+    call         = RadioField(choices=[ (1,"Yes"),(0,"No") ], coerce = int)
+    email        = RadioField(choices=[ (1,"Yes"),(0,"No") ], coerce = int)
+
+
 pass

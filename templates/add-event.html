@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from "_formhelpers.html" import render_field %}
+{% from "_formhelpers.html" import render_field, render_simple %}
 
 {% block body_block %}
 <div id="create-event" style="display: block;">
@@ -8,127 +8,45 @@
 
 		<div class="event-form" style="display: block;">
 			<form action="{{url_for('event.add')}}" method='post'>
-
+				{{ form.csrf_token }}
 				<div class="form-single-row">
-					<textarea name="name"
-						value="Quick description of the game or sport"
-						id="quick_description">Quick description of the game or sport
-									</textarea>
+				{{ render_field(form.name, id="quick_description") }}
 				</div>
 
 				<div class="event-lt">
 					<div class="form-single-row">
-						<input name="sport" value="Sport" type="text" />
+					{{ render_field(form.sport) }}
 					</div>
 				</div>
 
 				<div class="event-rt">
 					<div class="form-single-row">
-						<input name="level" value="Level" type="text" />
+					{{ render_field(form.level) }}
 					</div>
 				</div>
 
 				<div class="clear"></div>
 
 				<div class="form-single-row">
-					<textarea name="where" value="Address of the game"
-						id="address-game">Town or Address
-									</textarea>
+				{{ render_field(form.where) }}	
 				</div>
 
 				<div class="event-lt">
 					<div class="form-single-row">
-						<input class="date-pic" name="Date you are looking for"
-							value="Date you are looking for" id="date-looking-for"
-							type="text" />
+					{{ render_field(form.day, id="date-looking-for") }}
 					</div>
-				</div>
-
-				<div class="event-rt">
 					<div class="form-single-row">
-						<input class="time-pic" name="good_til"
-							value=" How long is this good for" id="how-long-good" type="text" />
+					{{ render_field(form.time, id="date-looking-for") }}
 					</div>
 				</div>
-				<div class="clear"></div>
 
-				<div class="two-col-devide">
+				<div class="clear"></div>		
 					<div class="event-lt">
 						<div class="form-single-row">
-							<label class="main-label">Will you host the game</label> <label
-								class="label_radio" for="sample-radio"> <input
-								name="host" id="sample-radio1" value="1" type="radio" /> <span>Yes</span>
-							</label> <label class="label_radio" for="sample-radio"> <input
-								name="host" id="sample-radio1" value="1" type="radio" /> <span>No</span>
-							</label>
+						{{ render_simple( form.will_host, class = "main-label", id="sample-radio" ) }}
 						</div>
 					</div>
-
-					<div class="event-rt">
-
-						<div class="form-single-row">
-							<label class="main-label">Will you travel to a game</label> <label
-								class="label_radio" for="sample-radio"> <input
-								name="travel" id="sample-radio2" value="1" type="radio" /> <span>Yes</span>
-							</label> <label class="label_radio" for="sample-radio"> <input
-								name="travel" id="sample-radio2" value="1" type="radio" /> <span>No</span>
-							</label>
-						</div>
-					</div>
-					<div class="clear"></div>
-				</div>
-
-				<div class="two-col-devide">
-					<div class="event-lt">
-						<div class="form-single-row">
-							<input name="fees" value="Fees" id="fees" type="text" />
-						</div>
-					</div>
-
-					<div class="event-rt">
-						<div class="form-single-row">
-							<input name="restrictions" value="Restrictions" id="restrictions"
-								type="text" />
-						</div>
-					</div>
-					<div class="clear"></div>
-				</div>
-
-				<div class="form-single-row">
-					<textarea name="comments" value="Anything they want to add"
-						id="anything-want">Any comments or notes
-									</textarea>
-				</div>
-
-				<div class="form-single-row">
-					<label class="left-label">Do you want text messages from
-						opponents?:</label> <label class="label_radio" for="sample-radio">
-						<input name="text" id="sample-radio4" value="1" type="radio" /> <span>Yes</span>
-					</label> <label class="label_radio" for="sample-radio"> <input
-						name="text" id="sample-radio4" value="1" type="radio" /> <span>No</span>
-					</label>
-					<div class="clear"></div>
-				</div>
-
-				<div class="form-single-row">
-					<label class="left-label"> Do you want opponents to call
-						you? :</label> <label class="label_radio" for="sample-radio"> <input
-						name="call" id="sample-radio5" value="1" type="radio" /> <span>Yes</span>
-					</label> <label class="label_radio" for="sample-radio"> <input
-						name="call" id="sample-radio5" value="1" type="radio" /> <span>No</span>
-					</label>
-					<div class="clear"></div>
-				</div>
-
-				<div class="form-single-row">
-					<label class="left-label"> Do you want opponents to email
-						you? :</label> <label class="label_radio" for="sample-radio"> <input
-						name="email" id="sample-radio6" value="1" type="radio" /> <span>Yes</span>
-					</label> <label class="label_radio" for="sample-radio"> <input
-						name="email" id="sample-radio6" value="1" type="radio" /> <span>No</span>
-					</label>
-					<div class="clear"></div>
-				</div>
+					
 
 				<div class="form-single-row">
 					<input type="submit" value="ADD EVENT" />

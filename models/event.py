@@ -2,7 +2,7 @@
 from mongoengine    import ( Document,
                              StringField, 
                              GeoPointField, 
-                             DateTimeField, 
+                             DateTimeField,
                              BooleanField, 
                              ReferenceField
                             )
@@ -15,7 +15,6 @@ class Event( Document ):
     where        = StringField()
     location	 = GeoPointField()
     when         = DateTimeField()
-    good_til     = DateTimeField()
     will_host    = BooleanField()
     will_travel  = BooleanField()
     fees         = StringField()

@@ -52,20 +52,25 @@ function checkbox(element){
 	$.ajax({
         url: '{{url_for("user.sports")}}',
         type: 'POST',
-        data: data
+        data: data,
+        success: function(data) {
+        	window.location.reload(true);
+        }    
     });
  };
+
 
 function mark_info(e){
 	$.ajax({
         type: "GET",
-        url: '/ajax',
+        url: '{{url_for("event.show")}}',
         data: {'id':e.details},
-        success: function(data) {
-        	alert([data['name'],data['when']])
+        success: function(html) {
+        	e.infoWindow.setContent(html);
         }    
     });
 };
+
 
 function set_fields(pos){
 	var longitude = pos.coords.longitude;
@@ -75,17 +80,19 @@ function set_fields(pos){
 	var gm = new GMaps({ div: '#map', 
 	                     lat:latitude, 
 	                     lng:longitude,
-	                    } 
-	                   );
+	                   });
 	gm.map.zoomControlOptions.position = 9;
 	gm.map.zoom = 11
 	{% for match in matches %}
+	
 	gm.addMarker({ lat: {{match.latitude}}, lng: {{match.longitude}}, 
 		           details:"{{match.detail}}", 
 		           title:"{{match.title}}", 
 		           icon:"{{url_for('static',filename='img/{}.png'.format(match.sport))}}",
-		           click: mark_info 
+		           click: mark_info,
+		           infoWindow: { content: '' }
 		         });
+	
 	{% endfor %}
 };
 
@@ -219,17 +226,18 @@ $(document).ready(function() {
      			</ins>
 				<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 			
-				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-				<!-- right_bottom_300x250 -->
-				<ins class="adsbygoogle"
-				     style="display:block"
-				     data-ad-client="ca-pub-0499148704255370"
-				     data-ad-slot="5193477596"
-				     data-ad-test="on"
-				     data-ad-format="auto">
-				</ins>
-				<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+			<div class="team-list-scroll">
+				<ul class="team-list">
+				{% for match in matches %}
+					<li>
+						<div class="team-rt">
+							<h4>{{match.title}}</h4>
+							<p>{{match.sport}} {{match.when}}</p>
+					</li>
+			   {% endfor %}
+			   </ul>
 			</div>
+			
 			<div class="clear"></div>
 			<!--Left sectin end-->
 		</div>

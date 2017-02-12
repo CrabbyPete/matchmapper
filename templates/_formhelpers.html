@@ -8,3 +8,12 @@
   {% endif %}
   </dd>
 {% endmacro %}
+
+{% macro render_simple(field) %}
+  {{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    <ul class="errors">
+    {% for error in field.errors %}<li>{{ error }}{% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

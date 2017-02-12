@@ -1,3 +1,4 @@
+import arrow
 import logging
 
 from datetime       import datetime 
@@ -22,22 +23,24 @@ def add():
                      sport   = form.sport.data,
                      level   = form.level.data,
                      where   = form.where.data,
-                     when    = form.when.data,
                      contact = current_user.id
                    )
-    
+        
+        day = str(form.day.data) + " " + str(form.time.data)
+       
         e = Event.objects( **data ).modify( upsert = True, new = True, set__modified = datetime.now() )
-        try:
-            e.good_til     = form.good_til.data
-        except:
-            e.good_til = "forever"
     
-        e.will_host    = form.will_host.data
-        e.will_travel  = form.will_travel.data
+        e.when         = arrow.get(day, 'YYYY-MM-DD HH:mm:ss').datetime
+        
         e.fees         = form.fees.data
         e.restrictions = form.restrictions.data
         e.comments     = form.comments.data
-        e.text         = form.text.data
+        
+        e.will_host    = True if form.will_host.data else False
+        e.will_travel  = True if form.will_travel.data else False
+        e.text         = True if form.text.data else False
+        e.email        = True if form.email.data else False
+        e.call         = True if form.call.data else False
     
         location       = geocode( data['where'] )
         if location:
@@ -52,17 +55,28 @@ def add():
     
     
     context = {'form':form}
-    content = render_template( 'add-event.html', **context )
+    content = render_template( 'event.html', **context )
     return content
 
 
-def events_near(location, max_distance):
-    """ Find events near a location
-    @param location: dict of latitude and longitude
-    @param max_distance: int of max miles
+@event.route('/show', methods=['GET'])
+def show():
+    """ Show a single event 
     """
-    query = Event.near(location, max_distance)
-    return query
+    event_id = request.args['id']
+    record = Event.objects.get(id = event_id)
+    context = { 'event':dict( name         = record.name,
+                              sport        = record.sport,
+                              level        = record.level,
+                              where        = record.where,
+                              when         = record.when,
+                              will_host    = record.will_host,
+                              will_travel  = record.will_travel,
+                              fees         = record.fees
+                            )
+              }
+    content = render_template( 'show-event.html', **context )
+    return content
 
 
 @event.route('/search', methods=['POST'])

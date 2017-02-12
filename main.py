@@ -68,7 +68,8 @@ def index():
                      'latitude' :str(event.location[1]),
                      'title':event.name,  
                      'detail':event.id,
-                     'sport':event.sport.lower()                  
+                     'sport':event.sport.lower(),
+                     'when':event.when               
                     }
             context['matches'].append( point )
         
@@ -77,8 +78,8 @@ def index():
     except Exception as e:
         pass
             
-    
     return render_template( 'map.html', **context )
+
 
 @application.route('/ajax')
 def ajax():
@@ -107,4 +108,4 @@ def internal_error(error):
 
 
 if __name__ == '__main__':
-    application.run(debug = False,  host = '0.0.0.0' )
+    application.run(debug = True,  host = '0.0.0.0' )

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block body_block %}
+<div id="show-event" style="display: block;">
+	<ul>
+		<li>{{event.name}}</li>
+		<li>{{event.sport}}</li>
+		<li>{{event.level}}</li>
+		<li>{{event.when}}</li>
+	</ul>
+</div>
+{% endblock %}

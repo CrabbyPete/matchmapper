@@ -50,9 +50,12 @@ def index():
             reply = requests.get(url)
             if reply.ok:
                 data = json.loads( reply.text)
+                if data['longitude'] == 0 and data['latitude'] == 0:
+                    data['longitude'] = -74.1645
+                    data['latitude'] = 40.9987
                 here = {'longitude':data['longitude'],'latitude':data['latitude']}
             else:
-                here ={}
+                here ={'longitude':data['longitude'],'latitude':data['latitude'] }
         if 'sports' in session:
             sport_filter = session['sports']
         else:
@@ -78,7 +81,7 @@ def index():
     except Exception as e:
         pass
             
-    return render_template( 'map.html', **context )
+    return render_template( 'index.html', **context )
 
 
 @application.route('/ajax')
@@ -90,7 +93,6 @@ def ajax():
                   level        = record.level,
                   where        = record.where,
                   when         = record.when,
-                  good_til     = record.good_til,
                   will_host    = record.will_host,
                   will_travel  = record.will_travel,
                   fees         = record.fees

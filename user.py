@@ -13,6 +13,8 @@ from flask.ext.login        import ( LoginManager,
                                     )
 
 from models.user            import User
+from models.event           import Event
+
 from forms                  import SignInForm, SignUpForm, ForgotForm
 
 from geo                    import geocode
@@ -104,7 +106,7 @@ def signin():
                     form.username.errors = ['No such user or password']
                 else:
                     login_user(user)
-                    return  render_template('close-iframe.html')
+                    return redirect('/')
         else:
             form.username.errors = ['Enter an email address']
    
@@ -115,7 +117,13 @@ def signin():
 
 @user.route('/settings', methods=['GET', 'POST'])
 def settings():
-    pass
+    #form = SettingsForm(request.form)
+    if request.method == 'GET':
+        events = Event.objects( contact = current_user.id )
+        context = {'events':events}
+        return render_template( 'user.html', **context )
+
+    #else if form.validate():
 
 @user.route('/signout')
 @login_required
@@ -124,8 +132,6 @@ def signout():
     """
     logout_user()
     return redirect('/')
-
-
 
 
 def send_email( user, password ):
@@ -182,8 +188,10 @@ def forgot():
 
 @user.route( '/sports', methods=['GET','POST'] )
 def sports():
+    
     sport = request.form['name'].lower()
-    checked = True if request.form['checked'] == 'true' else False
+    # You get this before the state changes, so its the opposite 
+    checked = True if request.form['checked'] == 'false' else False
  
  
     if current_user.is_anonymous():

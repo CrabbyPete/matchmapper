@@ -10,12 +10,10 @@ from wtforms                import ( validators,
                                      BooleanField,
                                      RadioField, 
                                      DateField,
-                                     TimeField,
                                      SubmitField,
-                                     TelField
                                     )
-
-
+from wtforms.fields.html5   import TelField
+from wtforms_components     import TimeField
 
 class ValidationError( Exception ):
     pass

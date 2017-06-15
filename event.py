@@ -55,7 +55,7 @@ def add():
     
     
     context = {'form':form}
-    content = render_template( 'add-event.html', **context )
+    content = render_template( 'page-event.html', **context )
     return content
 
 

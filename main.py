@@ -47,15 +47,20 @@ def index():
         if not here:
             ip = request.remote_addr
             url = 'http://freegeoip.net/json/{}'.format(ip)
-            reply = requests.get(url)
-            if reply.ok:
-                data = json.loads( reply.text)
-                if data['longitude'] == 0 and data['latitude'] == 0:
-                    data['longitude'] = -74.1645
-                    data['latitude'] = 40.9987
-                here = {'longitude':data['longitude'],'latitude':data['latitude']}
+            try:
+                reply = requests.get(url)
+            except Exception, e:
+                here = {'longitude':-74.2081,'latitude':41.0112}
             else:
-                here ={'longitude':data['longitude'],'latitude':data['latitude'] }
+                if reply.ok:
+                    data = json.loads( reply.text)
+                    if data['longitude'] == 0 and data['latitude'] == 0:
+                        data['longitude'] = -74.1645
+                        data['latitude'] = 40.9987
+                        here = {'longitude':data['longitude'],'latitude':data['latitude']}
+                    else:
+                        here ={'longitude':data['longitude'],'latitude':data['latitude'] }
+        
         if 'sports' in session:
             sport_filter = session['sports']
         else:
@@ -77,6 +82,7 @@ def index():
             context['matches'].append( point )
         
         context['sports'] = sports
+ 
               
     except Exception as e:
         pass

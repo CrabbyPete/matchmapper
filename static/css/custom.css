@@ -222,8 +222,9 @@ nav .logo {
     width: 98%;
 }
 
+
 #createEventModal .modal-dialog {
-    overflow-y: scroll; /* was initial !important*/
+    overflow-y: initial !important
 }
 
 #createEventModal .modal-body {

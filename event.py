@@ -2,7 +2,7 @@ import arrow
 import logging
 
 from datetime       import datetime 
-from flask          import Blueprint, render_template, request, redirect
+from flask          import Blueprint, render_template, request, redirect, jsonify
 
 
 from models.event   import Event 
@@ -31,7 +31,6 @@ def add():
         e = Event.objects( **data ).modify( upsert = True, new = True, set__modified = datetime.now() )
     
         e.when         = arrow.get(day, 'YYYY-MM-DD HH:mm:ss').datetime
-        
         e.fees         = form.fees.data
         e.restrictions = form.restrictions.data
         e.comments     = form.comments.data
@@ -53,10 +52,17 @@ def add():
         except Exception as err:
             logging.error("Exception {} trying to save event {}".format(str(err), e))
     
+        else:
+            return redirect('/')
+    """
+    data = jsonify(form.data)
+    return data
+    """
     
     context = {'form':form}
     content = render_template( 'page-event.html', **context )
     return content
+
 
 
 @event.route('/show', methods=['GET'])

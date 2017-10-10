@@ -26,7 +26,10 @@ user = Blueprint( 'user', __name__  )
 
 login_manager = LoginManager()
 
-def init_user(app):
+def init_user( app ):
+    """ Used by flask to initialize a user
+    @param app: Application id set up by flask
+    """
     login_manager.setup_app(app)
     app.register_blueprint(user)
     pass
@@ -34,7 +37,9 @@ def init_user(app):
 
 @login_manager.user_loader
 def load_user(userid):
-    """ Used by login to get a user """
+    """ Used by login to get a user "
+        @param userid: User referenced in the database pass in by flask
+    """
     try:
         user = User.objects.get( pk = userid )
     except:
@@ -73,13 +78,13 @@ def signup():
             try:
                 local = geocode( user.address )
                 user.location = [ float(local['lat']), float(local['lng']) ]
-            except Exception, e:
+            except Exception as e:
                 pass
 
             try:
                 user.save()
-            except Exception, e:
-                print e
+            except Exception as e:
+                print( e )
         else:
             form.username.errors = "User already exists"
   
@@ -89,7 +94,7 @@ def signup():
     
 @user.route('/signin', methods=['GET', 'POST'])
 def signin():
-    """ Login a user
+    """ Sign in an existing user
     """
     form = SignInForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -102,7 +107,7 @@ def signin():
             except User.DoesNotExist:
                 form.username.errors = ['No such user or password']
             else:
-                if not user.check_password(password):
+                if not user.check_password( password.encode() ):
                     form.username.errors = ['No such user or password']
                 else:
                     login_user(user)
@@ -158,8 +163,8 @@ def send_email( user, password ):
     message.Body = body
     try:
         mail.send(message)
-    except Exception, e:
-        log('Send mail error: {}'.format(str(e)))
+    except Exception as e:
+        log( 'Send mail error: {}'.format( str(e) ) )
 
 
 @user.route( '/forgot', methods=['GET','POST'] )

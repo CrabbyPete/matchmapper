@@ -1,4 +1,4 @@
-import urllib,urllib2,time,json,requests
+import urllib,time,json,requests
 
 from geopy.distance import vincenty
 """
@@ -19,7 +19,7 @@ def walk(seq, look_for ):
                 return found
 
     elif isinstance( seq, dict ):
-        for key,value in seq.iteritems():
+        for key,value in seq.items():
             if key == look_for:
                 return (key,value)
 
@@ -35,7 +35,7 @@ def walk(seq, look_for ):
 def reverse_geocode(lat,lng):
     #coords = "%f,%f" %(lat,lng)
     values = {'latlng' :"%s,%s" %(lat,lng),'sensor':'false'}
-    data = urllib.urlencode(values)
+    data = urllib.parse.urlencode( values )
     url = root_url+data
     response = requests.get(url)
     geodat = json.loads(response.text)
@@ -52,7 +52,7 @@ def reverse_geocode(lat,lng):
 def geocode(addr):
     # Encode our dictionary of url parameters
     values = {'address' : addr, 'sensor':'false'}
-    data = urllib.urlencode(values)
+    data = urllib.parse.urlencode( values )
     # Set up our request
     url = root_url+data
     response = requests.get( url )
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     allendale = geocode('Crestwood Lake, Allendale, NJ 07401')
     #reply = distance( me, allendale )
     distance = vincenty( ( float(me['lat']),float(me['lng']) ),( float(allendale['lat']),float(allendale['lng']) ) )
-    print distance.miles
+    print ( distance.miles )
     
     #reply = distance( reverse_geocode(me['lat'],me['lng']), reverse_geocode(allendale['lat'],allendale['lng']) )
     pass

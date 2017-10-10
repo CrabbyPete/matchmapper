@@ -50,7 +50,7 @@ def add():
         try:
             e.save()
         except Exception as err:
-            logging.error("Exception {} trying to save event {}".format(str(err), e))
+            logging.error("Exception {} trying to save event {}".format(str(err), e) )
     
         else:
             return redirect('/')

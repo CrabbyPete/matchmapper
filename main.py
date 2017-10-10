@@ -49,7 +49,7 @@ def index():
             url = 'http://freegeoip.net/json/{}'.format(ip)
             try:
                 reply = requests.get(url)
-            except Exception, e:
+            except Exception as e:
                 here = {'longitude':-74.2081,'latitude':41.0112}
             else:
                 if reply.ok:

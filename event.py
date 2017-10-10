@@ -2,8 +2,7 @@ import arrow
 import logging
 
 from datetime       import datetime 
-from flask          import Blueprint, render_template, request, redirect, jsonify
-
+from flask          import Blueprint, render_template, request, redirect
 
 from models.event   import Event 
 from forms          import EventForm
@@ -12,7 +11,7 @@ from geo            import geocode
 
 event = Blueprint( 'event', __name__  )
 
-@event.route('/event', methods=['GET', 'POST'])
+@event.route('/add', methods=['GET', 'POST'])
 def add():
     """ Add a new event
     """
@@ -54,13 +53,10 @@ def add():
     
         else:
             return redirect('/')
-    """
-    data = jsonify(form.data)
-    return data
-    """
-    
-    context = {'form':form}
-    content = render_template( 'page-event.html', **context )
+ 
+    sport = {sport:'True' for sport in current_user.sports }
+    context = {'form':form,'sports':sport}
+    content = render_template( 'event.html', **context )
     return content
 
 

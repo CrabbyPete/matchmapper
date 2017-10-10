@@ -1,0 +1,201 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Match Mapper | Profile/Setting Page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="css/icons.min.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="css/theme-blue.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="css/custom.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+		<div class="nav-container">
+			
+			<nav class="nav-1">
+				<div class="navbar">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-5 col-sm-6 col-xs-6">
+								<a href="index.html" class="logo-container">
+									<img class="logo" alt="Logo" src="img/logo-mm.png">
+								</a>
+							</div>
+					
+							<div class="createBtn col-md-3 text-right col-sm-6 col-md-push-3 col-xs-6">
+								<a class="btn btn-filled-alt" data-toggle="modal" data-target="#createEventModal">Create An Event</a>
+								<div class="mobile-toggle">
+									<div class="upper"></div>
+									<div class="middle"></div>
+									<div class="lower"></div>
+								</div>
+							</div>
+					
+							<div class="col-md-4 text-center col-md-pull-3 col-sm-12 col-xs-12">
+								<ul class="menu">
+									<li>
+										<a class="inner-link" href="#home">
+											Home
+										</a>
+									</li>
+									
+									<li>
+										<a class="inner-link" href="#about">
+											About
+										</a>
+									</li>
+									
+									<li>
+										<a class="inner-link" href="#more-info">
+											More Info
+										</a>
+									</li>
+									
+									
+									<li>
+										<a class="inner-link" href="#signup">
+											Signup
+										</a>
+									</li>
+								</ul>
+							</div>
+				
+						</div>
+					</div>
+				</div>
+			</nav>
+		
+		</div>
+		
+		<div class="main-container">
+			<div class="container">
+				<div class="row mt40">
+					<div class="col-md-9 col-sm-12 event-form">
+						<h4>Profile/Settings Page</h4>
+						<form class="settings_form" data-success="Your settings have been updated." data-error="Please try again.">
+        					<input type="text" name="first_last_name" class="event-text" placeholder="First &amp; Last Name">
+        					<br />
+        					Update Phone Number
+        					<input type="text" name="cell_phone" class="event-text" placeholder="973-555-1234">
+                    		<br />
+							Home Address
+        					<input type="text" name="location" class="event-text" placeholder="123 Main Street, Every Town, NJ 07110">
+                    		<br />
+							Date of Birth? (For Security Reasons)
+                    		<input type="date" class="date-pic" id="date-looking-for" name="day">
+                    		<br/>
+                    		Update Password<br/>
+							<input type="password" name="password" class="validate-required validate-password" placeholder="">
+							<p class="text-right">
+								<input type="submit" value="Update Profile">	
+							</p>
+                    		
+                		</form>
+					</div>
+					<div class="col-md-3 col-sm-12">
+						Right Sidebar
+					</div>
+				</div>
+			</div>
+
+			<footer class="footer footer-1">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-4">
+							<ul class="social-links">
+								<li><a href="#"><i class="icon-facebook"></i></a></li>
+								<li><a href="#"><i class="icon-twitter"></i></a></li>
+								<li><a href="#"><i class="icon-youtube-alt"></i></a></li>
+								<li><a href="#"><i class="icon-vimeo"></i></a></li>
+							</ul>
+						</div>
+					
+						<div class="col-sm-4 text-center">
+							<p class="sub">
+								© Copyright 2017 Match Mapper - All Rights Reserved
+							</p>
+						</div>
+					
+						<div class="col-sm-4 text-right">
+							<a href="#">
+								<img alt="Logo" src="img/logo-mm.png">
+							</a>
+						</div>	
+					</div>
+				</div>
+			</footer>
+		</div>
+		
+				
+		<script src="js/jquery.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/smooth-scroll.min.js"></script>
+        <script src="js/parallax.js"></script>
+        <script src="js/scripts.js"></script>
+
+        <!-- Create An Event Modal -->
+		<div class="modal fade has-js" id="createEventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  	<div class="modal-dialog" role="document">
+		    	<div class="modal-content">
+		      		<div class="modal-header">
+		        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        		<h5 class="modal-title" id="eventLabel">Create an Event</h5>
+		      		</div>
+		      		<div class="modal-body">
+		        		<form class="create_event" data-success="Success Message Here" data-error="Please try again.">
+        					<input type="text" name="quick_description" class="event-text" placeholder="Quick description of the game or matchup">
+        					<br />
+        					What Sport?
+        					<input type="text" name="quick_description" class="event-text" placeholder="For Example: Football">
+                    		<br />
+                    		Level &amp; Gender?
+        					<input type="text" name="level" class="event-text" placeholder="For Example: U12 Boys">
+                    		<br />
+							Where?
+        					<input type="text" name="location" class="event-text" placeholder="123 Main Street, Every Town, NJ 07110">
+                    		<br />
+							Date?
+                    		<input type="date" class="date-pic" id="date-looking-for" name="day">
+                    		<br/>
+                    		Time?
+                    		<input type="time" id="time" name="time" value="">
+							<br/>
+							Will you Host the Game?<br />
+							<div class="host-game btn-group btn-group-sm" role="group" aria-label="host-game">
+								<button type="button" class="btn btn-default">Yes</button>
+								<button type="button" class="btn btn-default">No</button>
+							</div>
+							<br />
+							Will you Travel to the Game?<br />
+							<div class="travel-game btn-group btn-group-sm" role="group" aria-label="travel-to">
+								<button type="button" class="btn btn-default">Yes</button>
+								<button type="button" class="btn btn-default">No</button>
+							</div>
+							<br />
+							How much, if any, are the fees?<br />
+							<input type="number" name="fees" placeholder="$40.00">
+                    		<br />
+							Any Further Comments/Restrictions?<br />
+        					<textarea class="form-control" rows="5" id="comments"></textarea>
+							<br />
+							Do you want text messages from your opponent?<br />
+							<div class="text-from btn-group btn-group-sm" role="group" aria-label="text-from">
+								<button type="button" class="btn btn-default">Yes</button>
+								<button type="button" class="btn btn-default">No</button>
+							</div>
+							<br />
+
+                    		<input type="submit" value="Save">
+                		</form>
+		      		</div>
+		    	</div> <!-- modal-content -->
+		  	</div> <!-- modal-dialog -->
+		</div> <!-- modal fade -->
+
+
+    </body>
+</html>

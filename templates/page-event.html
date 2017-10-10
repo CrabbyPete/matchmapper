@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% from "_formhelpers.html" import render_field, render_simple %}
+
+{% block body %}
+		<div class="nav-container">
+			
+			<nav class="nav-1">
+				<div class="navbar">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-5 col-sm-6 col-xs-6">
+								<a href="index.html" class="logo-container">
+									<img class="logo" alt="Logo" src="{{url_for('static', filename='img/logo-mm.png')}}">
+								</a>
+							</div>
+					
+							<div class="col-md-4 text-center col-md-pull-3 col-sm-12 col-xs-12">
+								<ul class="menu">
+									<li>
+										<a class="inner-link" href="#home">
+											Home
+										</a>
+									</li>
+									
+									<li>
+										<a class="inner-link" href="#about">
+											About
+										</a>
+									</li>
+									
+									<li>
+										<a class="inner-link" href="#more-info">
+											More Info
+										</a>
+									</li>
+									
+									
+									<li>
+										<a class="inner-link" href="#signup">
+											Signup
+										</a>
+									</li>
+								</ul>
+							</div>
+				
+						</div>
+					</div>
+				</div>
+			</nav>
+		</div>
+		
+		<div class="main-container">
+			<div class="container">
+
+			</div>
+{% endblock %}
+	

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% from "_formhelpers.html" import render_field, render_simple %}
+
+{% block body_block %}
+<div>
+	<ul>
+	{% for event in events %}
+	<li>{{event.name}}</li>
+	{% endfor %}
+	</ul>
+</div>
+{% endblock %}

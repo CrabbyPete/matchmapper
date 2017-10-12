@@ -71,16 +71,20 @@ def show():
     """
     event_id = request.args['id']
     record = Event.objects.get(id = event_id)
-    context = { 'event':dict( name         = record.name,
-                              sport        = record.sport,
-                              level        = record.level,
-                              where        = record.where,
-                              when         = record.when,
-                              will_host    = record.will_host,
-                              will_travel  = record.will_travel,
-                              fees         = record.fees
-                            )
-              }
+    try:
+        context = { 'event':dict( name         = record.name,
+                                  sport        = record.sport,
+                                  level        = record.level,
+                                  where        = record.where,
+                                  when         = record.when,
+                                  will_host    = record.will_host,
+                                  will_travel  = record.will_travel,
+                                  fees         = record.fees
+                                )
+                   }
+    except Exception as e:
+        context = {}
+        
     content = render_template( 'show-event.html', **context )
     return content
 

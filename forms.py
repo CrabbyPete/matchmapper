@@ -11,9 +11,12 @@ from wtforms                import ( validators,
                                      RadioField, 
                                      DateField,
                                      SubmitField,
+                                     TextField
                                     )
+
 from wtforms.fields.html5   import TelField
 from wtforms_components     import TimeField
+
 
 class ValidationError( Exception ):
     pass
@@ -59,21 +62,21 @@ class ForgotForm( Form ):
 class EventForm( Form ):
     """ Define the user form for an event
     """
-    name         = StringField(label = "Describe the event")
-    sport        = StringField(label = "What sport is this?")
-    level        = StringField()
-    where        = StringField()
+    name         = StringField( label = "Describe the event?" )
+    sport        = StringField( label = "What sport is this?" )
+    level        = StringField( label = "What level is this?" )
+    where        = StringField( label = "Whats the full address of the location")
     location     = StringField()
-    day          = DateField( label = "What date are you looking for?")
-    time         = TimeField( label = "What time do you want to start?")
-    will_host    = RadioField(label = "Will you host the match?", choices=[ (1,"Yes"),(0,"No") ], coerce = int )
-    will_travel  = RadioField(choices=[ (1,"Yes"),(0,"No") ], coerce = int)
-    fees         = StringField()
-    restrictions = StringField()
-    comments     = StringField()
-    text         = RadioField(choices=[ (1,"Yes"),(0,"No") ], coerce = int)
-    call         = RadioField(choices=[ (1,"Yes"),(0,"No") ], coerce = int)
-    email        = RadioField(choices=[ (1,"Yes"),(0,"No") ], coerce = int)
+    day          = DateField( label = "What date are you looking for?" , format='%m/%d/%Y' )
+    time         = TimeField( label = "What time do you want to start?" )
+    will_host    = RadioField(label = "Are you willing to host the game?", choices=[ (1,"Yes"),(0,"No") ], default = 1, coerce = int )
+    will_travel  = RadioField( label = "Are you willing to travel to the game?", choices=[ (1,"Yes"),(0,"No") ], default = 1, coerce = int)
+    fees         = StringField( label = "Are there any associated fees such as referees or venue fees?")
+    restrictions = StringField( label = "Are there any restrictions such as weights")
+    comments     = TextField( label = "Any further comments?" )
+    text         = RadioField( label = "Would you like opponents to text you?",  choices=[ (1,"Yes"),(0,"No") ], default = 1, coerce = int)
+    call         = RadioField( label = "Would you like opponents to call you?",   choices=[ (1,"Yes"),(0,"No") ], default = 1, coerce = int)
+    email        = RadioField( label = "Would you like opponents to email you",  choices=[ (1,"Yes"),(0,"No") ], default = 1, coerce = int)
+    submit      = SubmitField("")
 
 
-pass

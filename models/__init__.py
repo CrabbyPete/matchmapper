@@ -17,3 +17,6 @@ connect('matchmap',
          port     = MDB['port'],
          read_preference=ReadPreference.PRIMARY
         )
+
+from .event import Event
+from .user import User

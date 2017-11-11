@@ -1,7 +1,5 @@
 import os
-import logging
 import inspect
-
 
 def init_logger( app ):
     pass

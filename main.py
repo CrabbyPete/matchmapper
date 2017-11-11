@@ -12,14 +12,12 @@ from config                 import SECRET_KEY
 from user                   import init_user, current_user
 from forms                  import SignInForm
 from event                  import event
+from models                 import Event
 
-from models.sql             import Event, Database
 
 application = Flask(__name__, static_url_path='/static')
 application.secret_key = SECRET_KEY
 
-db = Database( 'postgresql+psycopg2://petedouma@localhost/matchmapper' )
-db.open()
 
 # Initialize the user so you can add it to the blueprint
 init_user( application )
@@ -120,4 +118,4 @@ def internal_error(error):
 
 
 if __name__ == '__main__':
-    application.run(debug = True,  host = '0.0.0.0' )
+    application.run(debug = False,  host = '0.0.0.0' )

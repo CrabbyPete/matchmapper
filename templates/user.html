@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% from "_formhelpers.html" import
+render_field, render_simple %} {% block body%}
+<div class="main-container">
+	<div class="container">
+		<div class="row mt40">
+			<div class="col-md-9 col-sm-12 event-form">
+				<h4>Profile/Settings Page</h4>
+				<form class="settings_form" data-success="Your settings have been updated." data-error="Please try again.">
+					<input type="text"  name="first_last_name" class="event-text"
+						   placeholder="First &amp; Last Name"> <br /> 
+						   Phone Number 
+					<input type="text" name="cell_phone" class="event-text"
+						   placeholder="973-555-1234"> <br /> Home Address <input
+						   type="text" name="location" class="event-text"
+						   placeholder="123 Main Street, Every Town, NJ 07110"> <br />
+							Date of Birth? 
+					<input type="date"
+						   class="date-pic" id="date-looking-for" name="day"> <br />
+					       Update Password<br /> 
+					<input type="password" name="password"
+						   class="validate-required validate-password" placeholder="">
+					<p class="text-right">
+						<input type="submit" value="Update Profile">
+					</p>
+
+				</form>
+			</div>
+			<div class="col-md-3 col-sm-12">Right Sidebar</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

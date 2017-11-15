@@ -1,25 +1,32 @@
 
-import re
 
-from models.user                    import User
-from models.event                   import Event
-from wtforms                        import ( Form, 
-                                             TextField, 
-                                             PasswordField, 
-                                             BooleanField,
-                                             RadioField, 
-                                             SubmitField    
-                                           )
-from flask.ext.wtf.html5            import  TelField
+from models.user            import User
+from models.event           import Event
 
-from wtforms                        import validators
-from flask.ext.mongoengine.wtf.orm  import model_form
+from wtforms                import ( validators,
+                                     Form, 
+                                     StringField, 
+                                     PasswordField, 
+                                     BooleanField,
+                                     RadioField, 
+                                     DateField,
+                                     SubmitField,
+                                     TextField
+                                    )
+
+from wtforms.fields.html5   import TelField
+from wtforms_components     import TimeField
+
 
 class ValidationError( Exception ):
     pass
 
+
+
+
+
 class SignInForm(Form):
-    username = TextField( "Enter Email",
+    username = StringField( "Enter Email",
         [ validators.Email(message= u'That\'s not a valid email address.'),
           validators.Length( min = 6, max = 45)
         ]
@@ -28,20 +35,19 @@ class SignInForm(Form):
 
 
 class SignUpForm(Form):
-    first_name  = TextField("First Name")
-    last_name   = TextField("Last Name")
+    first_name  = StringField("First Name")
+    last_name   = StringField("Last Name")
     
-    username = TextField("Email Address", [ validators.Email(message= u'That\'s not a valid email address.'),
+    username = StringField("Email Address", [ validators.Email(message= u'That\'s not a valid email address.'),
                                             validators.Length( min = 6, max = 45)
                                           ]
     )
-    password   = PasswordField("Password",[ validators.Required() ])
-    phone      = TextField("Cell Phone Number", [validators.Length( min = 6, max = 45)] )
-    address    = TextField("Address")
+    password   = PasswordField("Password")
+    phone      = TelField()
+    address    = StringField("Address")
     preference = RadioField('Check on best contact', choices=[('phone', 'Phone'),('email', 'Email')], default='phone')
     submit     = SubmitField("Sign Up")
 
-UserForm = model_form(User)
 
 class Phone( validators.Regexp ):
     def __init__(self):
@@ -49,9 +55,28 @@ class Phone( validators.Regexp ):
                                      message = "That\'s not a valid phone number")
  
 class ForgotForm( Form ):
-    email    = TextField( u"Email" )
-    phone    = TelField(u"Phone Number",[ validators.optional(), Phone() ] )
+    email    = StringField( u"Email" )
+    phone    = TelField()
     submit   = SubmitField("")
 
-EventForm = model_form(Event, exclude = ('location'))
-pass
+class EventForm( Form ):
+    """ Define the user form for an event
+    """
+    name         = StringField( label = "Describe the event?" )
+    sport        = StringField( label = "What sport is this?" )
+    level        = StringField( label = "What level is this?" )
+    where        = StringField( label = "Whats the full address of the location")
+    location     = StringField()
+    day          = DateField( label = "What date are you looking for?" , format='%m/%d/%Y' )
+    time         = TimeField( label = "What time do you want to start?" )
+    will_host    = RadioField(label = "Are you willing to host the game?", choices=[ (1,"Yes"),(0,"No") ], default = 1, coerce = int )
+    will_travel  = RadioField( label = "Are you willing to travel to the game?", choices=[ (1,"Yes"),(0,"No") ], default = 1, coerce = int)
+    fees         = StringField( label = "Are there any associated fees such as referees or venue fees?")
+    restrictions = StringField( label = "Are there any restrictions such as weights")
+    comments     = TextField( label = "Any further comments?" )
+    text         = RadioField( label = "Would you like opponents to text you?",  choices=[ (1,"Yes"),(0,"No") ], default = 1, coerce = int)
+    call         = RadioField( label = "Would you like opponents to call you?",   choices=[ (1,"Yes"),(0,"No") ], default = 1, coerce = int)
+    email        = RadioField( label = "Would you like opponents to email you",  choices=[ (1,"Yes"),(0,"No") ], default = 1, coerce = int)
+    submit      = SubmitField("")
+
+

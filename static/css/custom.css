@@ -1,0 +1,296 @@
+/*
+Custom Styles - Match Mapper 
+
+Variables:
+
+Main Blue:  #0785f2;
+Mid Blue:   #1766ab;
+Light Grey: #cdcdcd;
+Mid Grey:   #777;
+Dark Grey:  #121212;
+*/
+
+
+
+body {
+    background-color: #fff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #1766ab;
+}
+
+/* Helper Classes */
+.mt20 {
+    margin-top: 20px;
+}
+
+.mt40 {
+    margin-top: 40px;
+}
+
+.pt20 {
+    padding-top: 20px;
+}
+
+.pt40 {
+    padding-top: 40px;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* Remove Defaults */
+.btn {
+    background-color: #0785f2;
+    border-radius: 0;
+    color: #fff;
+    height: auto;
+}
+
+.btn:hover {
+    background-color: #066ac0;
+}
+
+.btn-filled-alt {
+    background-color: #888;
+    color: #fff;
+}
+
+/* Header */
+.nav-1 {
+    border-bottom: 1px solid #1766ab;
+}
+
+nav .logo {
+    max-height: 80px;
+}
+
+.nav-1 .logo {
+    margin-top: 4px;
+}
+
+.logo-container {
+    display: block;
+    height: 80px;
+    width: 100%;
+}
+
+.logo-container img {
+    max-width: 100%;
+}
+
+.header-break {
+    background-color: #1766ab;
+    padding: 40px 0;
+}
+
+.header-break-alt {
+    background-color: #cdcdcd;
+    color: #1766ab;
+    padding: 40px 0 60px;
+}
+
+.header-break-alt h2 {
+    color: #1766ab;
+}
+
+
+/* Map Area */
+.header-map {
+    background: #fff;
+    margin-top: 60px;
+    min-height: 450px;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+}
+
+.header-map-alt {
+    background: #fff;
+    min-height: 450px;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+}
+
+.header-map img {
+    max-width: 100%;
+}
+
+.header-map .col-md-9 {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.form-container {
+    background-color: #cdcdcd;
+    margin: 10px auto 0;
+    padding: 10px;
+    width: 300px;
+}
+
+/* Alternative Search Form */
+.alt-form-container,
+.alt-form-container-checkbox {
+    border-bottom: 1px solid #cdcdcd;
+    margin: 10px auto 0;
+    padding: 10px;
+    width: 100%;
+}
+
+.alt-form-container-checkbox {
+    height: 200px;
+}
+
+.alt-form-container h5 {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.alt-form-container form {
+    width: 100%;
+}
+
+.alt-form-container input[type="text"] {
+    border: 1px solid #1766ab;
+    border-radius: 0;
+    font-size: 14px;
+    padding: 6px 12px 5px;
+    width: 40%;
+}
+
+.alt-form-container input[type="submit"] {
+    padding: 0 40px;
+}
+
+.filters-list-alt ul {
+    width: 100%;
+}
+
+.filters-list-alt ul li {
+    float: left;
+    width: 20%;
+}
+
+.filters-list-alt button {
+    float: right;
+    margin-top: 10px;
+}
+
+.filters-list-alt .list-group-item:first-child {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+
+#check-list-box .list-group-item {
+    border: 0;
+    border-bottom: 1px solid #cdcdcd;
+}
+
+.validate-search {
+    width: 150px;
+}
+
+.bg-alt {
+    background-color: #777; 
+}
+
+/* Filter List */
+.glyphicon {
+    margin-right: 10px;
+}
+
+.filters-ad {
+    width: 100%;
+    height: 380px;
+}
+
+/* Create Event Form Modal */
+.modal-body form,
+.event-form form {
+    width: 98%;
+}
+
+
+#createEventModal .modal-dialog {
+    overflow-y: initial !important
+}
+
+#createEventModal .modal-body {
+}
+
+#createEventModal .modal-body input[type="text"],
+#createEventModal .modal-body input[type="date"],
+#createEventModal .modal-body input[type="time"],
+#createEventModal .modal-body input[type="number"],
+#createEventModal .modal-body textarea,
+.event-form input[type="text"],
+.event-form input[type="date"],
+.event-form input[type="time"],
+.event-form input[type="number"],
+.event-form textarea {
+    border: 1px solid #1766ab;
+    border-radius: 0;
+    font-size: 14px;
+    padding: 6px 12px;
+    width: 100%;
+}
+
+#createEventModal .modal-body input[type="date"] {
+    padding: 0 12px;
+    text-transform: uppercase;
+}
+
+#createEventModal .modal-body .event-text,
+#createEventModal .modal-body input[type="date"],
+#createEventModal .modal-body input[type="time"] {
+    margin-bottom: 10px;
+}
+
+
+/* MEDIA QUERIES */
+@media all and (max-width: 990px) {
+    .nav-1 .btn {
+        margin-top: 4px;
+    }    
+}
+
+
+@media all and (max-width: 767px) {
+
+    nav .btn {
+        margin-top: 0;
+        display: block;
+    }
+    .createBtn {
+        width: 40%;
+    }
+    .nav-1 .mobile-toggle {
+        top: -30px;
+        right: -30px;
+    }
+}
+
+
+@media all and (max-width: 600px) {
+
+    .createBtn .btn {
+        font-size: 12px;
+        padding: 0 12px;
+    }
+}
+
+
+
+

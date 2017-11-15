@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% from "_formhelpers.html" import render_field, render_simple %}
+
+{% block body_block %}
+<div id="create-event" style="display: block;">
+	<div class="event-form-area">
+		<h3>Create an Event</h3>
+
+		<div class="event-form" style="display: block;">
+			<form action="{{url_for('event.add')}}" method='post'>
+				{{ form.csrf_token }}
+				<div class="form-single-row">
+				{{ render_field(form.name, id="quick_description") }}
+				</div>
+
+				<div class="event-lt">
+					<div class="form-single-row">
+					{{ render_field(form.sport) }}
+					</div>
+				</div>
+
+				<div class="event-rt">
+					<div class="form-single-row">
+					{{ render_field(form.level) }}
+					</div>
+				</div>
+
+				<div class="clear"></div>
+
+				<div class="form-single-row">
+				{{ render_field(form.where) }}	
+				</div>
+
+				<div class="event-lt">
+					<div class="form-single-row">
+					{{ render_field(form.day, id="date-looking-for") }}
+					</div>
+					<div class="form-single-row">
+					{{ render_field(form.time, id="date-looking-for") }}
+					</div>
+				</div>
+
+				<div class="clear"></div>		
+					<div class="event-lt">
+						<div class="form-single-row">
+						{{ render_simple( form.will_host, class = "main-label", id="sample-radio" ) }}
+						</div>
+					</div>
+					
+
+				<div class="form-single-row">
+					<input type="submit" value="ADD EVENT" />
+				</div>
+			</form>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+{% endblock %}

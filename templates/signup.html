@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block body_block %}
+<div id="sign-up" style="display: block;">
+	<div class="signin-form">
+		<h3>Welcome to MatchMapper</h3>
+
+		<div class="sign-up-in-tabcont sign-up-form">
+			<form id="sign-up-form" method='post' action="{{url_for('user.signup')}}">
+				<div class="form-single-row">
+					{{ render_field( form.first_name,id='first_name') }}
+				</div>
+				<div class="form-single-row">
+					{{ render_field( form.last_name,id='name_name') }}
+				</div>
+				<div class="form-single-row">
+					{{ render_field( form.username,id='mail') }}
+				</div>
+				<div class="form-single-row">
+					{{ render_field( form.password,id='password') }}
+				</div>
+				<div class="form-single-row">
+					{{ render_field( form.phone,id='phone') }}
+				</div>
+				<div class="form-single-row">
+					{{ render_field( form.address,id='address') }}
+				</div>
+
+				<div class="form-single-row">
+					<div class="form-single-row">
+						<label class="main-label">Check on best contact</label> <label
+							class="label_radio" for="sample-radio"> <input
+							name="preference" id="sample-radio1" value="phone" type="radio"
+							checked /> <span>Phone</span>
+						</label> <label class="label_radio" for="sample-radio"> <input
+							name="preference" id="sample-radio1" value="email" type="radio" />
+							<span>Email</span>
+						</label>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+				<div class="form-single-row">
+					<input type="submit" value="Sign Up" />
+				</div>
+
+			</form>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+{% endblock %}

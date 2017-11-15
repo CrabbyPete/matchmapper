@@ -1,0 +1,302 @@
+{% extends 'base.html' %}
+{% from "_formhelpers.html" import render_field, render_simple %}
+
+{% block modal %}
+	<!-- Login Modal -->
+	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+					<h5 class="modal-title" id="loginModalLabel">Login to Match Mapper</h5>
+				</div>
+				<div class="modal-body">
+					<form class="login" action ="{{url_for('user.signin')}}" method='post'> <!--   data-success="Success Message Here" data-error="Your Username or Password is Incorrect, Please try again."> -->
+					<input type="text" name="username" class="username validate-required" placeholder="Username">
+					<input type="password" name="password" class="validate-required validate-password" placeholder="Password">
+					<input type="submit" value="Enter">
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block js %}
+		<style type="text/css">
+		#map {
+			float: right;
+			height: 700px;
+			text-align: center;
+			width: 1575px;
+		}
+		</style>
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDhe5s69KRDPnAqGUWxDxXILvjP3c1BvCA&sensor=true"></script>
+		<script type="text/javascript" src="{{ url_for( 'static', filename='js/gmaps.js') }}"></script>
+		
+		<script type="text/javascript">
+		function checkbox(element){
+			var name = element.innerText;
+			var checked = element.getAttribute("data-checked");
+			var data = {'name':name,'checked':checked};
+			
+			$.ajax({
+				url: '{{url_for("user.sports")}}',
+				type: 'POST',
+				data: data,
+				success: function(data) {
+					window.location.reload(true);
+				}
+			});
+		};
+		
+		function showLatLong(position)
+		{
+			var point = new google.maps.LatLng( position.coords.latitude,
+												position.coords.longitude
+											  );
+			var mp = document.getElementById( "map" )
+			var map = new google.maps.Map( mp, { zoom: 10, center: point, mapTypeId: google.maps.MapTypeId.ROADMAP} );
+			
+			var image = "{{ url_for('static', filename= 'img/football.png')}}";
+			var marker = new google.maps.Marker({ position: point,
+												  map: map,
+												  //icon: image,
+												  title:"football here"
+												});
+		}
+		</script>
+		<script type="text/javascript">
+		function mark_info(e){
+			$.ajax({
+					type: "GET",
+					url: '{{url_for("event.show")}}',
+					data: {'id':e.details},
+					success: function(html) { e.infoWindow.setContent(html);}
+			});
+		};
+		function set_fields(pos){
+			var longitude = pos.coords.longitude;
+			var latitude  = pos.coords.latitude;
+			$('#longitude').val(longitude);
+			$('#latitude').val(latitude);
+			var gm = new GMaps({ div: '#map',
+								 lat:latitude,
+								 lng:longitude,
+							  });
+			gm.map.zoomControlOptions.position = 9;
+			gm.map.zoom = 11
+			{% for match in matches %}
+				
+				gm.addMarker({ lat: {{match.latitude}}, lng: {{match.longitude}},
+					details:"{{match.detail}}",
+					title:"{{match.title}}",
+					fillColor: '#00CCBB',
+					//icon:"{{url_for('static',filename='img/{}.png'.format(match.sport))}}",
+					click: mark_info,
+					infoWindow: { content: '' }
+					});
+				
+			{% endfor %}
+		};
+		$(document).ready(function() {
+			{%if center %}
+				var pos = {'coords':{}};
+				pos.coords = {
+					longitude:{{center.longitude}},
+					latitude:{{center.latitude}}
+				};
+				
+				set_fields( pos );
+			
+		{% else %}
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition( set_fields );
+				}
+		{% endif %}
+	});
+	</script>
+	{% endblock %}
+	
+	{% block body %}
+	<div class="nav-container">
+		<nav class="nav-1">
+			<div class="navbar">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-5 col-sm-6 col-xs-4">
+							<a href="/" class="logo-container">
+								<img class="logo" alt="Logo" src="{{url_for('static',filename='img/logo-mm.png')}}">
+							</a>
+						</div>
+						<div class="col-md-3 text-right col-sm-6 col-md-push-3 col-xs-8">
+							{% if current_user.is_active %}
+								<a class="btn btn-filled"  href="{{url_for('user.signout')}}">Log Out</a>
+							{% else %}
+								<a class="btn btn-filled" data-toggle="modal" data-target="#loginModal">Log In</a>
+							{% endif %}
+							<div class="mobile-toggle">
+								<div class="upper"></div>
+								<div class="middle"></div>
+								<div class="lower"></div>
+							</div>
+						</div>
+						
+						<div
+							class="col-md-4 text-center col-md-pull-3 col-sm-12 col-xs-12">
+							<ul class="menu">
+								<li><a class="inner-link" href="/"> Home </a></li>
+								<li><a class="inner-link" href="#about"> About </a></li>
+								{% if not current_user.is_active %}
+									<li><a class="inner-link" href="{{ url_for('user.signup')}}"> Signup </a></li>
+									<li><a class="inner-link" href="#more-info"> More Info</a></li>
+								{% else %}
+									<li><a class="inner-link" href="{{ url_for( 'user.settings') }}"> User Settings </a></li>
+									<li><a class="inner-link" href="{{ url_for('event.add') }}"> Add Event </a></li>
+								{% endif %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+	</div>
+	<div class="main-container">
+		<a id="home" class="in-page-link"></a>
+		<section class="header header-map">
+			<div class="col-md-9 col-sm-12">
+				{% block guts %}
+				<div id="map"></div>
+				{% endblock guts %}
+			</div>
+			<div class="col-md-3 col-sm-12 text-center">
+				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+				<ins class="adsbygoogle"
+					style="display:inline-block;width:300px;height:250px"
+					data-ad-client="ca-pub-0499148704255370"
+					data-ad-test="on"
+					data-ad-slot="7213011594">
+				</ins>
+				<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+				
+				<div class="form-container mt20">
+					<form class="form-email"
+						data-success="Thanks for your submission, we will be in touch shortly."
+						data-error="Please Enter a Sport">
+						<h5>Search For A Match</h5>
+						<input type="text" name="search"
+						class="validate-required validate-search "
+						placeholder="Search for a Match"> <input type="submit"
+						value="Search »">
+					</form>
+				</div>
+				<div class="form-container mt20">
+					<h5>Filter Sports</h5>
+					<div class="filters-list">
+						<ul id="check-list-box" class="list-group checked-list-box" style = "max-height: 200px; overflow-y-scroll">
+							{% for key, value in sports.items() %}
+								<li class="list-group-item text-left"
+									{% if value %} data-checked="true" {% else %} data-checked="false" {% endif %}
+									data-color="info" onclick="checkbox(this)">{{key}}
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+		<a id="about" class="in-page-link"></a>
+		<section class="header header-break">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-12 text-center">
+						<h2 class="text-white">About Match Mapper</h2>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="features features-2">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1 col-sm-12 text-center">
+						<h4>Match Mapper is way to find a game for your team or a match
+						for an individual player.
+						</h4>
+						<p>Whether its match up for your junior football team, a player looking for
+							an early morning tennis match, or a group looking for a fourth for golf. This
+							is the place to post it
+						</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-4 text-center feature">
+						<img alt="Feature Image"
+						src="{{url_for('static',filename ='img/small-1.jpg')}}">
+						<h5>Find a Sport</h5>
+						<p>Filter out only the sports you are interested in, and search near your
+						town</p>
+					</div>
+					<div class="col-sm-4 text-center feature">
+						<img alt="Feature Image"
+						src="{{url_for('static',filename='img/small-2.jpg')}}">
+						<h5>Contact the Coach or Opponent</h5>
+						<p>You control how you want to be contacted email, text or by phone to determine if
+						   the game or match is possible
+						</p>
+					</div>
+					<div class="col-sm-4 text-center feature">
+						<img alt="Feature Image"
+						src="{{url_for('static',filename='img/small-3.jpg')}}">
+						<h5>Show Up &amp; Play</h5>
+						<p>Once you worked out the details the only left to do is show up and play</p>
+					</div>
+				</div>
+			</div>
+		</section>
+		<a id="more-info" class="in-page-link"></a>
+		<section class="cta cta-5 parallax">
+			<div class="background-image-holder">
+				<img alt="Background Image" class="background-image"
+				src="{{url_for('static',filename='img/about-bg.jpg')}}">
+			</div>
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-12 text-center">
+						<h2 class="text-white">How To Use Match Mapper</h2>
+						<h5 class="text-white">Lorem ipsum dolor sit amet,
+						consectetur adipisicing elit.</h5>
+						<a class="btn btn-filled super-action" href="#">More Info</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		<a id="signup" class="in-page-link"></a>
+		<section class="cta cta-3 bg-alt">
+			<div class="container">
+				<div class="row v-align-children">
+					<div class="col-sm-4 col-md-5 text-left">
+						<h3 class="text-white">
+						Sign Up &amp; start <br>planning games now!
+						</h3>
+					</div>
+					<div class="col-md-5 col-sm-8">
+						<form class="form-email" action={{url_for('user.signup')}} method = 'post' >
+							<!--
+							data-success="Thanks, Check your email or text message for completion"
+							data-error="Please fill all fields correctly.">
+							-->
+							<input type="text" name="name" class="signup-name-field"   placeholder="Your Name">
+							<input type="text" name="email" class="signup-email-field" placeholder="Email Address">
+							<input type="text" name="phone" class="signup-email-field" placeholder="Cell Phone (optional)">
+							<input type="submit" value="Sign Up »">
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+{% endblock %} 

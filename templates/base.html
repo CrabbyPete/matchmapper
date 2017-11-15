@@ -1,47 +1,55 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Match Mapper</title>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Match Mapper | Home</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="{{ url_for( 'static', filename = 'css/bootstrap.css'    ) }}" rel="stylesheet" type="text/css" media="all" />
+		<link href="{{ url_for( 'static', filename = 'css/icons.min.css'    ) }}" rel="stylesheet" type="text/css" media="all" />
+		<link href="{{ url_for( 'static', filename = 'css/theme-blue.css'   ) }}" rel="stylesheet" type="text/css" media="all" />
+		<link href="{{ url_for( 'static', filename = 'css/custom.css'       ) }}" rel="stylesheet" type="text/css" media="all" />
+		<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
+		<script src="https://code.jquery.com/jquery-1.9.0.js"></script>
+	
+		<script src="{{url_for('static',filename='js/jquery.min.js')}}"></script>
+		<script src='http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js'></script>
+		<script src='http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js'></script>
+		<script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+		<script src="{{url_for('static',filename='js/smooth-scroll.min.js')}}"></script>
+		<script src="{{url_for('static',filename='js/parallax.js')}}"></script>
+		<script src="{{url_for('static',filename='js/scripts.js')}}"></script>	
+	</head>
 
-<style type="text/css">
-#map {
-    float: right;
-    height: 600px;
-    text-align: center;
-    width: 875px;
-}
-
-</style>
-<script src="https://code.jquery.com/jquery-1.9.0.js"></script>
-<script src="https://code.jquery.com/jquery-migrate-1.2.1.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-
-{% block head_js %}
+{% block modal %}
 {% endblock %}
-</script>
-
-
-<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" type="text/css" href="{{ url_for( 'static', filename = 'css/style.css') }}"/>
-<link rel="stylesheet" type="text/css" href="{{ url_for( 'static', filename = 'css/media.css') }}"/>
-
-<script src="{{ url_for( 'static', filename = 'js/jquery-1.8.3.min.js' ) }}"></script>
-<script type="text/javascript" src="{{ url_for( 'static', filename = 'js/jquery.fancybox.js') }}?v=2.1.5"></script>
-<link rel="stylesheet" type="text/css" href="{{ url_for( 'static', filename = 'css/jquery.fancybox.css') }}?v=2.1.5" media="screen" />
-<script type='text/javascript' src="{{ url_for( 'static', filename='js/radio.js'  )}}"></script> 
-<script type='text/javascript' src="{{ url_for( 'static', filename='js/custom.js' )}}"></script> 
-
-
-</head>
 
 <body>
    {% block js %}
    {% endblock %}
-   {% block body_block %}
-   {% endblock %}
-	<footer>
+   {% block body %}
+   {% block guts %}
+   {% endblock guts %}
+   {% endblock body%}
+	<footer class="footer footer-1">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-4">
+						<ul class="social-links">
+							<li><a href="#"><i class="icon-facebook"></i></a></li>
+							<li><a href="#"><i class="icon-twitter"></i></a></li>
+						</ul>
+					</div>
+					<div class="col-sm-4 text-center">
+						<p class="sub">© Copyright 2017 Match Mapper - All Rights
+						Reserved</p>
+					</div>
+					<div class="col-sm-4 text-right">
+						<a href="#"> <img alt="Logo"
+							src="{{url_for('static',filename='img/logo-mm.png')}}">
+						</a>
+					</div>
+				</div>
+			</div>
 	</footer>
 </body>
-
 </html>

@@ -44,17 +44,33 @@ function showLatLong(position)
 {% block js %}
 <script type="text/javascript">
 
+function checkbox(element){
+	var name = element.name;
+	var checked = element.checked;
+	var data = {'name':name,'checked':checked};
+	
+	$.ajax({
+        url: '{{url_for("user.sports")}}',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+        	window.location.reload(true);
+        }    
+    });
+ };
+
 
 function mark_info(e){
 	$.ajax({
         type: "GET",
-        url: '/ajax',
+        url: '{{url_for("event.show")}}',
         data: {'id':e.details},
-        success: function(data) {
-        	alert([data['name'],data['when']])
+        success: function(html) {
+        	e.infoWindow.setContent(html);
         }    
     });
 };
+
 
 function set_fields(pos){
 	var longitude = pos.coords.longitude;
@@ -64,17 +80,19 @@ function set_fields(pos){
 	var gm = new GMaps({ div: '#map', 
 	                     lat:latitude, 
 	                     lng:longitude,
-	                    } 
-	                   );
+	                   });
 	gm.map.zoomControlOptions.position = 9;
 	gm.map.zoom = 11
 	{% for match in matches %}
+	
 	gm.addMarker({ lat: {{match.latitude}}, lng: {{match.longitude}}, 
 		           details:"{{match.detail}}", 
 		           title:"{{match.title}}", 
 		           icon:"{{url_for('static',filename='img/{}.png'.format(match.sport))}}",
-		           click: mark_info 
+		           click: mark_info,
+		           infoWindow: { content: '' }
 		         });
+	
 	{% endfor %}
 };
 
@@ -102,7 +120,6 @@ $(document).ready(function() {
 		  });
 	 });
 	
-
 	$('.fancybox').fancybox({ afterClose:function(){
 		  						window.location.reload(true); } 
 	});
@@ -135,269 +152,16 @@ $(document).ready(function() {
 			{% if current_user.is_active %}
 			<div class="sign-up-area">
 			<a  id="sign-out" href="{{url_for('user.signout')}}">Sign Out</a>
+			<a  id="settings" href="{{url_for('user.settings')}}">Settings</a>
+			
 			</div>
 			<div class="top-rt-header">
-				<a class="add-event fancybox" href="#create-event">Add an Event</a>
-				<div id="create-event" style="display: none;">
-					<div class="event-form-area">
-						<h3>Create an Event</h3>
-
-						<div class="event-form" style="display: block;">
-							<form action="{{url_for('event.add')}}" method='post'>
-								
-								<div class="form-single-row">
-									<textarea name="name"
-										      value="Quick description of the game or sport"
-										      id="quick_description">Quick description of the game or sport
-									</textarea>
-								</div>
-
-								<div class="event-lt">
-									<div class="form-single-row">
-										<input  name="sport"
-											    value="Sport" 
-											    type="text" />
-									</div>
-								</div>
-								
-								<div class="event-rt">
-									<div class="form-single-row">
-										<input  name="level"
-											    value="Level" 
-											    type="text" />
-									</div>
-								</div>
-								
-								<div class="clear"></div>
-
-								<div class="form-single-row">
-									<textarea name="where"
-										      value="Address of the game" 
-										      id="address-game">Town or Address
-									</textarea>
-								</div>
-
-								<div class="event-lt">
-									<div class="form-single-row">
-										<input class="date-pic" name="Date you are looking for"
-											value="Date you are looking for" id="date-looking-for"
-											type="text" />
-									</div>
-								</div>
-
-								<div class="event-rt">
-									<div class="form-single-row">
-										<input class="time-pic" name="good_til"
-											value=" How long is this good for" id="how-long-good"
-											type="text" />
-									</div>
-								</div>
-								<div class="clear"></div>
-
-								<div class="two-col-devide">
-									<div class="event-lt">
-										<div class="form-single-row">
-											<label class="main-label">Will you host the game</label> 
-											<label class="label_radio" for="sample-radio"> 
-												<input name="host" id="sample-radio1" value="1"
-													   type="radio" />
-												<span>Yes</span>
-											</label> 
-											<label class="label_radio" for="sample-radio"> 
-												<input name="host" 
-												       id="sample-radio1" 
-												       value="1"
-												       type="radio" />
-												<span>No</span>
-											</label>
-										</div>
-									</div>
-
-									<div class="event-rt">
-
-										<div class="form-single-row">
-											<label class="main-label">Will you travel to a game</label> 
-											<label class="label_radio" for="sample-radio"> 
-												<input name="travel" 
-												       id="sample-radio2" 
-												       value="1"
-												       type="radio" />
-												<span>Yes</span>
-											</label> 
-											<label class="label_radio" for="sample-radio"> 
-												<input name="travel" 
-												       id="sample-radio2" 
-												       value="1"
-													   type="radio" />
-												<span>No</span>
-											</label>
-										</div>
-									</div>
-									<div class="clear"></div>
-								</div>
-
-								<div class="two-col-devide">
-									<div class="event-lt">
-										<div class="form-single-row">
-											<input name="fees" value="Fees" id="fees" type="text" />
-										</div>
-									</div>
-
-									<div class="event-rt">
-										<div class="form-single-row">
-											<input name="restrictions" value="Restrictions" id="restrictions" type="text" />
-										</div>
-									</div>
-									<div class="clear"></div>
-								</div>
-
-								<div class="form-single-row">
-									<textarea name="comments"
-										      value="Anything they want to add" 
-										      id="anything-want">Any comments or notes
-									</textarea>
-								</div>
-
-								<div class="form-single-row">
-									<label class="left-label">Do you want text messages from opponents?:</label> 
-									<label class="label_radio" for="sample-radio">
-										<input name="text" id="sample-radio4" value="1"
-										type="radio" />
-									<span>Yes</span>
-									</label> 
-									<label class="label_radio" for="sample-radio"> 
-										<input name="text" id="sample-radio4" value="1" type="radio" />
-										<span>No</span>
-									</label>
-									<div class="clear"></div>
-								</div>
-
-								<div class="form-single-row">
-									<label class="left-label"> Do you want opponents to call you? :</label> 
-									<label class="label_radio" for="sample-radio">
-										<input name="call" id="sample-radio5" value="1"
-										       type="radio" />
-										<span>Yes</span>
-									</label> 
-									<label class="label_radio" for="sample-radio"> 
-										<input name="call" id="sample-radio5" value="1" type="radio" />
-										<span>No</span>
-									</label>
-									<div class="clear"></div>
-								</div>
-
-								<div class="form-single-row">
-									<label class="left-label"> Do you want opponents to email you? :</label> 
-									<label class="label_radio" for="sample-radio">
-										<input name="email" 
-										       id="sample-radio6" value="1"
-										       type="radio" />
-										<span>Yes</span>
-									</label> 
-									
-									<label class="label_radio" for="sample-radio"> 
-										<input name="email" id="sample-radio6" value="1" type="radio" />
-										<span>No</span>
-									</label>
-									<div class="clear"></div>
-								</div>
-
-								<div class="form-single-row">
-									<input type="submit" value="ADD EVENT" />
-								</div>
-							</form>
-							<div class="clear"></div>
-						</div>
-					</div>
-				</div>
+				<a class="add-event fancybox fancybox.iframe" href="{{url_for('event.add')}}">Add an Event</a>
 				{% else %}
 				<div class="sign-up-area">
-					<a class="fancybox fancybox.iframe"  id="sign-in" href="{{url_for('user.signin')}}">Sign In</a>
-					<div id="sign-in-show" style="display: none;">
-						<div class="signin-form">
-							<h3>Welcome to Matchmapper</h3>
-							<div class="sign-up-in-tabcont" style="display: block;">
-								<form id="sign-in-form" action={{url_for('user.signin')}}>
-									<div class="form-single-row">
-										<label>Enter Email</label>
-										<input name="username" type="email" value="" id="email" />
-									</div>
-									
-									<div class="form-single-row">
-										<label>Enter Password</label>
-										<input name="password" type="password" value="" id="password" />
-									</div>
-									
-									<div class="form-single-row">
-										<input type="submit" value="Login" />
-									</div>
-									
-									<div class="form-single-row">
-										<p class="forget-password">
-											<a href="{{url_for('user.forgot')}}">Forgot Password?</a>
-										</p>
-									</div>
-								</form>
-								<div class="clear"></div>
-							</div>
-						</div>
-					</div>				
-					<span>or</span> <a class="fancybox" href="#sign-up">Sign up</a>
-					<div id="sign-up" style="display: none;">
-						<div class="signin-form">
-							<h3>Welcome to MatchMapper </h3>
-
-							<div class="sign-up-in-tabcont sign-up-form">
-								<form id="sign-up-form">
-									<div class="form-single-row">
-										<label>First Name</label>
-										<input name="first_name" type="text" value="" id="first_name" />
-									</div>
-									<div class="form-single-row">
-										<label>Last Name</label>
-										<input name="last_name" type="text" value="" id="last_name" />
-									</div>
-									<div class="form-single-row">
-										<label>Enter Email</label>
-										<input name="username" type="email" value="" id="mail" />
-									</div>
-									<div class="form-single-row">
-										<label>Create Password</label><input name="password"
-											type="password" value="" id="password" />
-									</div>
-									<div class="form-single-row">
-										<label>Phone</label><input name="phone" type="text" value=""
-											id="phone" />
-									</div>
-									<div class="form-single-row">
-										<label>Address</label>
-										<textarea name="address" value="" id="address"></textarea>
-									</div>
-									
-									<div class="form-single-row">
-										<div class="form-single-row">
-											<label class="main-label">Check on best contact</label> 
-											<label class="label_radio" for="sample-radio"> 
-												<input name="preference" id="sample-radio1" value="phone" type="radio" checked />
-												<span>Phone</span>
-												</label> <label class="label_radio" for="sample-radio"> 
-												<input name="preference" id="sample-radio1" value="email" type="radio" />
-												<span>Email</span>
-											</label>
-											<div class="clear"></div>
-										</div>
-									</div>
-
-									<div class="form-single-row">
-										<input type="submit" value="Sign Up" />
-									</div>
-
-								</form>
-								<div class="clear"></div>
-							</div>
-						</div>
-					</div>
-	
+					<a class="fancybox fancybox.iframe"  id="sign-in" href="{{url_for('user.signin')}}">Sign In</a>		
+					<span>or</span> 
+					<a class="fancybox fancybox.iframe"  id="sign-up" href="{{url_for('user.signup')}}">Sign up</a>
 				</div>
 				{% endif %}
 			
@@ -425,26 +189,19 @@ $(document).ready(function() {
 							<a class="drop-sports" href="#"><span>Sports</span></a>
 							<div class="drop-sports-check" style="display: none;">
 								<ul>
+									{% for key, value in sports.items() %}
 									<li class="drop-down-txt">
 										<label class="myCheckbox">
-											<input type="checkbox" name="checkbox"> 
-											<span>Football</span>
+											<input type="checkbox" name="{{key}}" onclick=checkbox(this)
+											{% if value %}
+											checked
+											{% endif %}
+											> 
+											<span>{{ key.capitalize() }}</span>
 										</label>
 									</li>
+									{% endfor %}
 
-									<li class="drop-down-txt">
-										<label class="myCheckbox">
-											<input type="checkbox" name="checkbox"> 
-											<span>Baseball</span>
-										</label>
-									</li>
-									
-									<li class="drop-down-txt">
-										<label class="myCheckbox">
-											<input type="checkbox" name="checkbox"> 
-											<span>Soccer</span>
-										</label>
-									</li>
 								</ul>
 							</div>
 						</div>
@@ -458,18 +215,29 @@ $(document).ready(function() {
 				</div>
 			</div>
 			<div class="rtCol">
+			
 				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-					<!-- right_300x250 -->
-					<ins class="adsbygoogle"
-     					style="display:inline-block;width:300px;height:250px"
-     					data-ad-client="ca-pub-0499148704255370"
-     					data-ad-test="on"
-     					data-ad-slot="7213011594">
-     				</ins>
-				<script>
-				(adsbygoogle = window.adsbygoogle || []).push({});
-				</script>
+				<!-- right_300x250 -->
+				<ins class="adsbygoogle"
+     			 	 style="display:inline-block;width:300px;height:250px"
+     			 	 data-ad-client="ca-pub-0499148704255370"
+     			 	 data-ad-test="on"
+     			 	 data-ad-slot="7213011594">
+     			</ins>
+				<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+			
+			<div class="team-list-scroll">
+				<ul class="team-list">
+				{% for match in matches %}
+					<li>
+						<div class="team-rt">
+							<h4>{{match.title}}</h4>
+							<p>{{match.sport}} {{match.when}}</p>
+					</li>
+			   {% endfor %}
+			   </ul>
 			</div>
+			
 			<div class="clear"></div>
 			<!--Left sectin end-->
 		</div>

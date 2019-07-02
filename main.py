@@ -6,7 +6,7 @@ import json
 from flask  import Flask, render_template, request, jsonify, session
 
 # Local Locals
-from config import SECRET_KEY
+from config import SECRET_KEY, GEO_API_KEY
 
 # Blueprint apps
 from user   import init_user, current_user
@@ -18,7 +18,6 @@ from models import Event
 application = Flask(__name__, static_url_path='/static')
 application.secret_key = SECRET_KEY
 
-geoip = 'http://api.ipstack.com/{}?access_key=a0bd53860c858318144c8b7a21dcdc48&output=json'
 
 # Initialize the user so you can add it to the blueprint
 init_user(application)
@@ -49,7 +48,7 @@ def index():
     else:
         if not here:
             ip = request.remote_addr if not request.remote_addr == '127.0.0.1' else '173.70.202.157'
-            url = geoip.format(ip)
+            url = f'http://api.ipstack.com/{ip}?access_key={GEO_API_KEY}&output=json'
             try:
                 reply = requests.get(url)
             except Exception as e:

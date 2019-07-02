@@ -38,15 +38,19 @@ class Event( Document ):
         
         sports = {}
         events = []
-        for event in query:
-            if not event.sport.lower() in sports:
-                sports[event.sport.lower()] = event.sport.lower() in sport_filter
-                
-            if sport_filter:
-                if event.sport.lower() in sport_filter:
-                    events.append( event )
-            else:
-                events.append( event )
+        try:
+            for event in query:
+                if not event.sport.lower() in sports:
+                    sports[event.sport.lower()] = event.sport.lower() in sport_filter
+
+                if sport_filter:
+                    if event.sport.lower() in sport_filter:
+                        events.append(event)
+                else:
+                    events.append(event)
+        except Exception as e:
+            pass
+
         return events, sports
         
         

@@ -3,25 +3,26 @@ import requests
 import json
 
 # Import Flask
-from flask                  import Flask, render_template, request, jsonify, session
+from flask  import Flask, render_template, request, jsonify, session
 
 # Local Locals
-from config                 import SECRET_KEY
+from config import SECRET_KEY
 
 # Blueprint apps
-from user                   import init_user, current_user
-from forms                  import SignInForm
-from event                  import event
-from models                 import Event
+from user   import init_user, current_user
+from forms  import SignInForm
+from event  import event
+from models import Event
 
 
 application = Flask(__name__, static_url_path='/static')
 application.secret_key = SECRET_KEY
 
+geoip = 'http://api.ipstack.com/{}?access_key=a0bd53860c858318144c8b7a21dcdc48&output=json'
 
 # Initialize the user so you can add it to the blueprint
-init_user( application )
-application.register_blueprint( event )
+init_user(application)
+application.register_blueprint(event)
 
 #google_map = googlemaps.Client(key='AIzaSyBD1TfgE6RnmaG6waS4_IzXbB9VmY08rqM')
 
@@ -47,8 +48,8 @@ def index():
     
     else:
         if not here:
-            ip = request.remote_addr
-            url = 'http://freegeoip.net/json/{}'.format(ip)
+            ip = request.remote_addr if not request.remote_addr == '127.0.0.1' else '173.70.202.157'
+            url = geoip.format(ip)
             try:
                 reply = requests.get(url)
             except Exception as e:
@@ -62,6 +63,8 @@ def index():
                         here = {'longitude':data['longitude'],'latitude':data['latitude']}
                     else:
                         here ={'longitude':data['longitude'],'latitude':data['latitude'] }
+                else:
+                    here = {'longitude': -74.2081, 'latitude': 41.0112}
         
         if 'sports' in session:
             sport_filter = session['sports']
@@ -118,4 +121,4 @@ def internal_error(error):
 
 
 if __name__ == '__main__':
-    application.run(debug = False,  host = '0.0.0.0' )
+    application.run(host = '127.0.0.1' )

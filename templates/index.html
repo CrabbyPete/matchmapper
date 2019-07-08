@@ -35,7 +35,7 @@
 			width: 1575px;
 		}
 		</style>
-		<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDhe5s69KRDPnAqGUWxDxXILvjP3c1BvCA&sensor=true"></script>
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDhe5s69KRDPnAqGUWxDxXILvjP3c1BvCA"></script>
 		<script type="text/javascript" src="{{ url_for( 'static', filename='js/gmaps.js') }}"></script>
 		
 		<script type="text/javascript">
@@ -88,6 +88,7 @@
 								 lat:latitude,
 								 lng:longitude,
 							  });
+
 			gm.map.zoomControlOptions.position = 9;
 			gm.map.zoom = 11
 			{% for match in matches %}
@@ -174,6 +175,7 @@
 				{% endblock guts %}
 			</div>
 			<div class="col-md-3 col-sm-12 text-center">
+
 				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 				<ins class="adsbygoogle"
 					style="display:inline-block;width:300px;height:250px"
@@ -182,16 +184,12 @@
 					data-ad-slot="7213011594">
 				</ins>
 				<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-				
+
 				<div class="form-container mt20">
-					<form class="form-email"
-						data-success="Thanks for your submission, we will be in touch shortly."
-						data-error="Please Enter a Sport">
-						<h5>Search For A Match</h5>
-						<input type="text" name="search"
-						class="validate-required validate-search "
-						placeholder="Search for a Match"> <input type="submit"
-						value="Search »">
+					<form action="{{url_for('event.search')}}" method='POST' class="form-search" data-error="Please Enter a value">
+						<h5>Search Address</h5>
+						<input type="text" name="search" class="validate-required validate-search " placeholder="Enter Town and State">
+						<input type="submit" value="Search »">
 					</form>
 				</div>
 				<div class="form-container mt20">

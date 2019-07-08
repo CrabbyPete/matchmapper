@@ -116,8 +116,8 @@ def about():
 
 @application.errorhandler(500)
 def internal_error(error):
-    return "500 error:{}".format( str(error) )
+    return "500 error:{}".format( str(error))
 
 
 if __name__ == '__main__':
-    application.run(host = '127.0.0.1' )
+    application.run(host = '127.0.0.1')

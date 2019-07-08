@@ -34,7 +34,7 @@ class Event( Document ):
         @param max_distance: maximum distance in miles
         """
    
-        query = cls.objects(location__near=[location['longitude'],location['latitude']], location__max_distance = max_distance )
+        query = cls.objects(location__near=[location['longitude'],location['latitude']], location__max_distance = max_distance)
         
         sports = {}
         events = []
@@ -48,14 +48,14 @@ class Event( Document ):
                         events.append(event)
                 else:
                     events.append(event)
-        except Exception as e:
+        except RuntimeError as e:
+            # Mongo engine is not 3.7 ready, so it bubbles up StopInteration. Catch it here
+            # if str(e) == 'generator raised StopIteration':
             pass
 
         return events, sports
         
-        
-        
-    
+
     @classmethod
     def find_or_create(cls):
         pass

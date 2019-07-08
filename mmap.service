@@ -1,0 +1,15 @@
+
+# Create a systemctl with this put it in /etc/systemd/systems
+[Unit]
+Description=uWSGI instance to serve rxmed
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/matchmapper/matchmapper
+Environment="PATH=/home/ubuntu/matchmapper/bin"
+ExecStart=/home/ubuntu/rxmed/bin/uwsgi --ini wsgi.ini
+
+[Install]
+WantedBy=multi-user.target

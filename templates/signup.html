@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% from "_formhelpers.html" import render_field %}
 
-{% block body_block %}
+{% block body %}
 <div id="sign-up" style="display: block;">
 	<div class="signin-form">
 		<h3>Welcome to MatchMapper</h3>
@@ -29,10 +29,10 @@
 
 				<div class="form-single-row">
 					<div class="form-single-row">
-						<label class="main-label">Check on best contact</label> <label
-							class="label_radio" for="sample-radio"> <input
-							name="preference" id="sample-radio1" value="phone" type="radio"
-							checked /> <span>Phone</span>
+						<label class="main-label">Check on best contact</label>
+						<label class="label_radio" for="sample-radio">
+						<input name="preference" id="sample-radio1" value="phone" type="radio" checked />
+							<span>Phone</span>
 						</label> <label class="label_radio" for="sample-radio"> <input
 							name="preference" id="sample-radio1" value="email" type="radio" />
 							<span>Email</span>

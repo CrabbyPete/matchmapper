@@ -88,6 +88,8 @@ def show():
 
 @event.route('/search', methods=['POST'])
 def search():
-    search = request.form['search_text']
+    search = request.form.get('search')
     place = geocode( search )
-    return redirect('/?lng={}&lat={}'.format(place[u'lng'], place[u'lat']))
+    if place:
+        return redirect('/?lng={}&lat={}'.format(place[u'lng'], place[u'lat']))
+    

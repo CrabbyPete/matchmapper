@@ -1,14 +1,13 @@
-import urllib,time,json,requests
+import urllib,time,json,requests, logging
 
+from config import GOOGLE_API_KEY
 from geopy.distance import vincenty
-"""
 
-
-"""
-root_url = "http://maps.googleapis.com/maps/api/geocode/json?"
+root_url = "https://maps.googleapis.com/maps/api/geocode/json?"
 distance_url = "https://maps.googleapis.com/maps/api/distancematrix/json?" #origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&key=YOUR_API_KEY
 
-def walk(seq, look_for ):
+
+def walk(seq, look_for):
     """
     Walk through the dictionary to find a value
     """
@@ -30,11 +29,10 @@ def walk(seq, look_for ):
     return None
 
 
-
 #https://developers.google.com/maps/documentation/geocoding/#ReverseGeocoding
 def reverse_geocode(lat,lng):
     #coords = "%f,%f" %(lat,lng)
-    values = {'latlng' :"%s,%s" %(lat,lng),'sensor':'false'}
+    values = {'latlng' :"%s,%s" %(lat,lng),'sensor':'false', 'key':GOOGLE_API_KEY}
     data = urllib.parse.urlencode( values )
     url = root_url+data
     response = requests.get(url)
@@ -51,19 +49,23 @@ def reverse_geocode(lat,lng):
 # https://developers.google.com/maps/documentation/geocoding/
 def geocode(addr):
     # Encode our dictionary of url parameters
-    values = {'address' : addr, 'sensor':'false'}
+    values = {'address' : addr, 'sensor':'false','key':GOOGLE_API_KEY }
     data = urllib.parse.urlencode( values )
     # Set up our request
     url = root_url+data
-    response = requests.get( url )
+    response = requests.get(url)
     # Get JSON data
     if response.ok:
         geodat = json.loads(response.text)
-        location = walk( geodat, 'location')
-        if location:
-            return location[1]
+        if 'error_message' in geodat:
+            logging.error(geodat['error_message'])
+        else:
+            location = walk( geodat, 'location')
+            if location:
+                return location[1]
 
     return None
+
 
 def distance( origin, dest ):
     values = "origins={},{}%20destinations={},{}".format(origin['lat'],origin['lng'], dest['lat'],dest['lng'])
@@ -74,6 +76,7 @@ def distance( origin, dest ):
         geodat = json.loads(response.text)
         return geodat
     return None
+
 
 if __name__ == '__main__':
     reply = geocode('07481')

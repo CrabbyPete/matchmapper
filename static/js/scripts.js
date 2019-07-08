@@ -2,12 +2,6 @@ $(document).ready(function() {
 
 	"use strict";
 
-	// Variables
-	
-	var triggerVid;
-	var launchkit_hoverGallery;
-
-
     // Disable default click on a with blank href
 
     $('a').click(function() {
@@ -17,7 +11,6 @@ $(document).ready(function() {
     });
     
     // Smooth scroll to inner links
-	
     if($('.inner-link').length){
     	$('.inner-link').smoothScroll({
     		offset: -59,
@@ -26,20 +19,12 @@ $(document).ready(function() {
     }
 	
 	// Close mobile menu once link is clicked
-	
 	$('.menu li a').click(function(){
 		if($('nav').hasClass('nav-open')){
 			$('nav').removeClass('nav-open');
 		}
 	});
 
-    
-    // Set bg of nav container if dark skin
-    
-    if($('nav').hasClass('dark')){
-    	$('.nav-container').addClass('dark');
-    	$('.main-container').find('section:nth-of-type(1)').css('outline', '40px solid #222');
-    }
 
     $(window).scroll(function() {
         if ($(window).scrollTop() > 0) {
@@ -47,25 +32,9 @@ $(document).ready(function() {
         } else {
             $('nav').removeClass('fixed');
         }
-
     });
 
-    if(!$('nav').hasClass('fixed') && !$('nav').hasClass('overlay')){
-           
-        // Compensate the height of parallax element for inline nav
-        
-        if($(window).width() > 768){
-            $('.parallax:first-child .background-image-holder').css('top', -($('nav').outerHeight(true)));
-        }
-        
-        // Adjust fullscreen elements
-        if($(window).width() > 768 && ($('section.parallax:first-child, header.parallax:first-child').outerHeight() == $(window).height()) ){
-            $('section.parallax:first-child, header.parallax:first-child').css('height', ($(window).height() - $('nav').outerHeight(true)));
-        }
-    }
-
     // Mobile nav
-
     $('.mobile-toggle').click(function() {
         $(this).closest('nav').toggleClass('nav-open');
         if ($(this).closest('nav').hasClass('nav-3')) {
@@ -73,13 +42,6 @@ $(document).ready(function() {
         }
     });
 
-    // Initialize sliders
-
-    if($('.hero-slider').length){
-        $('.hero-slider').flexslider({
-            directionNav: false
-        });
-    }
 
     if($('.slider').length){
         $('.slider').flexslider({
@@ -87,133 +49,33 @@ $(document).ready(function() {
         });
     }
 
-    // Append .background-image-holder <img>'s as CSS backgrounds
-
-    $('.background-image-holder').each(function() {
-        var imgSrc = $(this).children('img').attr('src');
-        $(this).css('background', 'url("' + imgSrc + '")');
-        $(this).children('img').hide();
-        $(this).css('background-position', '50% 50%');
-    });
-    
-    // Fade in background images
-	
-	setTimeout(function(){
-		$('.background-image-holder').each(function() {
-			$(this).addClass('fadeIn');
-		});
-    },200);
-
-
-    // Hook up video controls on local video
-
-    $('.local-video-container .play-button').click(function() {
-        $(this).toggleClass('video-playing');
-        $(this).closest('.local-video-container').find('.background-image-holder').toggleClass('fadeout');
-        var video = $(this).closest('.local-video-container').find('video');
-        if (video.get(0).paused === true) {
-            video.get(0).play();
-        } else {
-            video.get(0).pause();
-        }
+    $('form.form-search').submit(function(e)
+    {
+        error = validateFields(this);
+        if (error === 1)
+        {
+			$(this).closest('form').find('.form-error').fadeIn(200);
+		}
+		else
+		{
+	        jQuery.ajax({ type: "POST", url: "/event/search", data: this.serialize() });
+		}
     });
 
-    $('video').bind("pause", function() {
-        var that = this;
-        triggerVid = setTimeout(function() {
-            $(that).closest('section').find('.play-button').toggleClass('video-playing');
-            $(that).closest('.local-video-container').find('.background-image-holder').toggleClass('fadeout');
-            $(that).closest('.modal-video-container').find('.modal-video').toggleClass('reveal-modal');
-        }, 100);
-    });
-
-    $('video').on('play', function() {
-        if (typeof triggerVid === 'number') {
-            clearTimeout(triggerVid);
-        }
-    });
-
-    $('video').on('seeking', function() {
-        if (typeof triggerVid === 'number') {
-            clearTimeout(triggerVid);
-        }
-    });
-
-    // Video controls for modals
-
-    $('.modal-video-container .play-button').click(function() {
-        $(this).toggleClass('video-playing');
-        $(this).closest('.modal-video-container').find('.modal-video').toggleClass('reveal-modal');
-        $(this).closest('.modal-video-container').find('video').get(0).play();
-    });
-
-    $('.modal-video-container .modal-video').click(function(event) {
-        var culprit = event.target;
-        if ($(culprit).hasClass('modal-video')) {
-            $(this).find('video').get(0).pause();
-        }
-    });
-
-    // Hover gallery
-    $('.hover-gallery').each(function(){
-    	var that = $(this);
-    	var timerId = setInterval(function(){scrollHoverGallery(that);}, $(this).closest('.hover-gallery').attr('speed'));
-		$(this).closest('.hover-gallery').attr('timerId', timerId );
-		
-		$(this).find('li').bind('hover, mouseover, mouseenter, click', function(e){
-			e.stopPropagation();
-			clearInterval(timerId);
-		});
-	
-	});
-	
-
-    $('.hover-gallery li').mouseenter(function() {
-        clearInterval($(this).closest('.hover-gallery[timerId]').attr('timerId'));
-        $(this).parent().find('li.active').removeClass('active');
-        $(this).addClass('active');
-    });
-    
-    
-    
-    // Sort tabs into 2 ul's
-    
-    $('.tabbed-content').each(function(){
-    	$(this).append('<ul class="content"></ul>');
-    });
-    
-    $('.tabs li').each(function(){
-    	var originalTab = $(this), activeClass = "";
-    	if(originalTab.is('.tabs li:first-child')){
-    		activeClass = ' class="active"';
-    	}
-    	var tabContent = originalTab.find('.tab-content').detach().wrap('<li'+activeClass+'></li>').parent();
-    	originalTab.closest('.tabbed-content').find('.content').append(tabContent);
-    });
-    
-    $('.tabs li').click(function(){
-    	$(this).closest('.tabs').find('li').removeClass('active');
-    	$(this).addClass('active');
-    	var liIndex = $(this).index() + 1;
-    	$(this).closest('.tabbed-content').find('.content li').removeClass('active');
-    	$(this).closest('.tabbed-content').find('.content li:nth-child('+liIndex+')').addClass('active');
-    });
-
-    
     // Contact form code
-
     $('form.form-email').submit(function(e) {
        
         // return false so form submits through jQuery rather than reloading page.
-        if (e.preventDefault) e.preventDefault();
-        else e.returnValue = false;
+        if (e.preventDefault)
+            e.preventDefault();
+        else
+            e.returnValue = false;
 
         var thisForm = $(this).closest('form.form-email'),
             error = 0,
             originalError = thisForm.attr('original-error'),
             loadingSpinner, iFrame, userEmail, userFullName, userFirstName, userLastName, successRedirect;
 
-		// Mailchimp/Campaign Monitor Mail List Form Scripts
 		iFrame = $(thisForm).find('iframe.mail-list-form');
 		
         thisForm.find('.form-error, .form-success').remove();
@@ -221,8 +83,8 @@ $(document).ready(function() {
         thisForm.append('<div class="form-success" style="display: none;">' + thisForm.attr('data-success') + '</div>');
 
 
-		if( (iFrame.length) && (typeof iFrame.attr('srcdoc') !== "undefined") && (iFrame.attr('srcdoc') !== "") ){
-				
+		if( (iFrame.length) && (typeof iFrame.attr('srcdoc') !== "undefined") && (iFrame.attr('srcdoc') !== "") )
+		{
 			console.log('Mail list form signup detected.');
             userEmail = $(thisForm).find('.signup-email-field').val();
             userFullName = $(thisForm).find('.signup-name-field').val();
@@ -264,9 +126,7 @@ $(document).ready(function() {
 				thisForm.find('.form-error').text(originalError);
 			}
 
-
 			error = validateFields(thisForm);
-
 
 			if (error === 1) {
 				$(this).closest('form').find('.form-error').fadeIn(200);
@@ -282,17 +142,17 @@ $(document).ready(function() {
 
 				jQuery.ajax({
 					type: "POST",
-					url: "mail/mail.php",
+					url: "/event/search",
 					data: thisForm.serialize(),
-					success: function(response) {
-						// Swiftmailer always sends back a number representing numner of emails sent.
-						// If this is numeric (not Swift Mailer error text) AND greater than 0 then show success message.
+					success: function(response)
+					{
 						$(thisForm).find('.form-loading').remove();
 
                         successRedirect = thisForm.attr('success-redirect');
                         // For some browsers, if empty `successRedirect` is undefined; for others,
                         // `successRedirect` is false.  Check for both.
-                        if (typeof successRedirect !== typeof undefined && successRedirect !== false && successRedirect !== "") {
+                        if (typeof successRedirect !== typeof undefined && successRedirect !== false && successRedirect !== "")
+                        {
                             window.location = successRedirect;
                         }
 
@@ -344,7 +204,6 @@ $(document).ready(function() {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
     }
 
-   
 
     $('.validate-required, .validate-email').on('blur change', function() {
         validateFields($(this).closest('form'));
@@ -359,7 +218,8 @@ $(document).ready(function() {
     function validateFields(form) {
         var name, error, originalErrorMessage;
 
-        $(form).find('.validate-required[type="checkbox"]').each(function() {
+        $(form).find('.validate-required[type="checkbox"]').each(function()
+        {
             if (!$('[name="' + $(this).attr('name') + '"]:checked').length) {
                 error = 1;
                 name = $(this).attr('name').replace('[]', '');
@@ -384,6 +244,16 @@ $(document).ready(function() {
                 $(this).removeClass('field-error');
             }
         });
+
+       $(form).find('.validate-search').each(function() {
+            if (!(/(.+)@(.+){2,}\.(.+){2,}/.test($(this).val()))) {
+                $(this).addClass('field-error');
+                error = 1;
+            } else {
+                $(this).removeClass('field-error');
+            }
+        });
+
 
         if (!form.find('.field-error').length) {
             form.find('.form-error').fadeOut(1000);

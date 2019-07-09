@@ -199,7 +199,7 @@ def sports():
     checked = True if request.form['checked'] == 'false' else False
  
  
-    if current_user.is_anonymous():
+    if current_user.is_anonymous:
         if not 'sports' in session:
             session['sports'] = []
         if checked:

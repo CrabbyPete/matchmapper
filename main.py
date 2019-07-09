@@ -91,8 +91,8 @@ def index():
     except Exception as e:
         pass
             
-    return render_template( 'index.html', **context )
-
+    template = render_template( 'index.html', **context )
+    return template
 
 @application.route('/ajax')
 def ajax():
@@ -120,4 +120,4 @@ def internal_error(error):
 
 
 if __name__ == '__main__':
-    application.run(host = '127.0.0.1')
+    application.run(host = '127.0.0.1', debug=False)

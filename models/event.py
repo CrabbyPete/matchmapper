@@ -28,7 +28,7 @@ class Event( Document ):
 
 
     @classmethod
-    def near(cls, location, sport_filter = [], max_distance = 1000 ):
+    def near(cls, location, sport_filter = [], max_distance = 10 ):
         """ Get all events with a geographic location
         @param location: dict of longitude and latitude
         @param max_distance: maximum distance in miles

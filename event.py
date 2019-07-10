@@ -2,7 +2,7 @@ import arrow
 import logging
 
 from datetime       import datetime 
-from flask          import Blueprint, render_template, request, redirect
+from flask          import Blueprint, render_template, request, redirect, abort, jsonify
 
 from models.event   import Event 
 from forms          import EventForm
@@ -88,6 +88,10 @@ def show():
 
 @event.route('/search', methods=['POST'])
 def search():
-    search = request.form['search_text']
+    search = request.form.get('search')
     place = geocode( search )
-    return redirect('/?lng={}&lat={}'.format(place[u'lng'], place[u'lat']))
+    if place:
+        return jsonify(place)#redirect('/?lng={}&lat={}'.format(place[u'lng'], place[u'lat']))
+
+    abort(404)
+
